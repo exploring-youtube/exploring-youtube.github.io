@@ -46,7 +46,243 @@
         canvas.height = imageSize * scaleFactor;
         var ctx = canvas.getContext('2d');
         var hiddenCanvas = d3.select('body').append('canvas')
+          .style('display', 'none')<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <style>
+    * {
+      font-family: Helvetica;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    // taken directly from nbremer's occupationcanvas code
+    //Generates the next color in the sequence, going from 0,0,0 to 255,255,255.
+    //From: https://bocoup.com/weblog/2d-picking-in-canvas
+    var nextCol = 1;
+    function genColor(){
+      var ret = [];
+      // via http://stackoverflow.com/a/15804183
+      if(nextCol < 16777215){
+        ret.push(nextCol & 0xff); // R
+        ret.push((nextCol & 0xff00) >> 8); // G 
+        ret.push((nextCol & 0xff0000) >> 16); // B
+
+        nextCol += 100; // This is exagerated for this example and would ordinarily be 1.
+      }
+      var col = "rgb(" + ret.join(',') + ")";
+      return col;
+    }
+
+    d3.json('youtubeIMG2.json', function(image) {
+      d3.json('vids.json', function(videos) {
+        // some defaults for the image
+        var imageSize = Math.sqrt(image.length);
+        var scaleFactor = Math.floor(500 / imageSize);
+        var data = [];
+        var threshold = 158;
+        var padding = 20;
+
+        // set up canvas and hidden canvas
+        var canvas = d3.select('body').append('canvas')
+          .on('mousemove', mousemove).node();
+        canvas.width = imageSize * scaleFactor;
+        canvas.height = imageSize * scaleFactor;
+        var ctx = canvas.getContext('2d');
+        var hiddenCanvas = d3.select('body').append('canvas')
           .style('display', 'none')
+          .node();
+        hiddenCanvas.width = imageSize * scaleFactor;
+        hiddenCanvas.height = imageSize * scaleFactor;
+        var hiddenCtx = hiddenCanvas.getContext('2d');
+        // then set up where tweet text will be shown
+        var videoDiv = d3.select('body').append('div')
+          .style({
+            'width': (window.innerWidth - canvas.width - 3 * padding) + 'px',
+            'display': 'inline-block',
+            'vertical-align': 'top',
+            'padding': padding + 'px'
+          });
+        
+        // first process the tweets
+        var minOpacity = _.min(videos, function(video) {
+          //return tweet.stats.favorites;
+          return video.likes;
+        });
+        //minOpacity = minOpacity.stats.favorites + 1;
+        minOpacity = minOpacity.likes + 1;
+        var maxOpacity = _.max(videos, function(video) {
+          //return tweet.stats.favorites;
+          return video.likes;
+        });
+        //maxOpacity = maxOpacity.stats.favorites + 1;
+        maxOpacity = maxOpacity.likes + 1;
+
+        var opacityScale = d3.scale.log()
+          .domain([minOpacity, maxOpacity])
+          .range([.25, 1]);
+
+
+
+
+        // first process the tweets
+        var minRadius = _.min(videos, function(video) {
+          //return tweet.stats.favorites;
+          return video.views;
+        });
+        //minOpacity = minOpacity.stats.favorites + 1;
+        minRadius = minRadius.views + 1;
+        var maxRadius = _.max(videos, function(video) {
+          //return tweet.stats.favorites;
+          return video.views;
+        });
+        //maxOpacity = maxOpacity.stats.favorites + 1;
+        maxRadius = maxRadius.views + 1;
+
+        var radiusScale = d3.scale.log()
+          .domain([minRadius, maxRadius])
+          .range([.25, 1]);
+
+
+
+
+
+
+
+
+        var videoColors = {
+          // 'reply': [248,148,6], // orange
+          // 'retweet': [81,163,81], // green
+          // 'tweet': [0,136,204] // blue
+          'before': [192,192,192], // silver
+          'after': [255,0,0], // red
+        };
+        var colToVideo = {};
+        videos = _.chain(videos)
+          .sortBy(function(video) {
+            var dateStr = video.dateUploaded.substring(0, 10);
+            video.date = new Date(dateStr);
+            video.opacity = opacityScale(video.likes + 1);
+
+            video.radius = radiusScale(video.views+1);
+
+
+            policyDate = new Date("2018-02-20");
+            if (video.date < policyDate) { //2018-02-20
+              video.type = 'before';
+            } else  {
+              video.type = 'after';
+            } 
+            // and then remember the tweet by its unique color
+            video.uniqColor = genColor();
+            colToVideo[video.uniqColor] = video;
+            return video.date;
+          }).sortBy(function(video, i) {
+            video.index = i;
+            return -video.date;
+          }).value();
+
+        // turn it grayscale first
+        _.each(image, function(pixel) {
+          data.push(Math.max(pixel[0], pixel[1], pixel[2]));
+        });
+        // Atkinson dithering
+        var videoIndex = 0;
+        var videoMap = {};
+        _.each(data, function(oldPixel, i) {
+          var newPixel = oldPixel > threshold ? 255 : 0;
+          var error = (oldPixel - newPixel) >> 3;
+          
+          data[i] = newPixel;
+          data[i + 1] += error;
+          data[i + 1] += error;
+          data[i + imageSize - 1] += error;
+          data[i + imageSize] += error;
+          data[i + imageSize + 1] += error;
+          data[i + imageSize + 2] += error;
+          
+          if (!newPixel) {
+            // if the pixel is black, then keep track of
+            // its corresponding tweet
+            videoMap[i] = videos[videoIndex];
+            videoIndex += 1;
+          }
+        });
+        data = data.slice(0, imageSize * imageSize);
+        drawCanvas();
+
+        function drawCanvas() {
+          //first clear canvas
+          ctx.fillStyle = "#fff";
+          ctx.rect(0, 0, canvas.width, canvas.height);
+          ctx.fill();
+
+          _.each(data, function(pixel, i) {
+            var video = videoMap[i];
+            if (video) {
+              var x = (i % imageSize) * scaleFactor + scaleFactor / 2;
+              var y = Math.floor(i / imageSize) * scaleFactor + scaleFactor / 2;
+
+              // first fill the visible canvas
+              ctx.fillStyle = 'rgba(' + videoColors[video.type].join(',') +
+                ',' + video.opacity + ')';
+              ctx.beginPath();
+              //ctx.arc(x, y, scaleFactor * tweet.opacity, 0, 2 * Math.PI, true);
+              ctx.arc(x, y, scaleFactor * video.radius, 0, 2 * Math.PI, true);
+              
+              ctx.fill();
+              if (video.hovered) {
+                // if it's hovered, give it a stroke
+                ctx.strokeStyle = 'rgb(255,216,75)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+              }
+
+              // then the hidden canvas
+              hiddenCtx.fillStyle = video.uniqColor;
+              hiddenCtx.beginPath();
+              hiddenCtx.fillRect(x - scaleFactor / 2, y - scaleFactor / 2,
+                scaleFactor, scaleFactor);
+            }
+          });
+        }
+
+        var currentVideo;
+        var dateFormat = d3.time.format("%Y-%m-%d");
+        function mousemove() {
+          var col = hiddenCtx.getImageData(d3.event.offsetX, d3.event.offsetY, 1, 1).data;
+          var color = 'rgb(' + col[0] + "," + col[1] + ","+ col[2] + ")";
+          var video = colToVideo[color];
+
+          // we only want to re-render if hovered tweet is different from current tweet
+          if (video && (!currentVideo || video.videoId !== currentVideo.videoId)) {
+            // first clean up currentTweet (now previous tweet)
+            if (currentVideo) {
+              currentVideo.hovered = false;
+            }
+            currentVideo = video;
+
+            video.hovered = true;
+            drawCanvas();
+            var viewsStr = String(video.views) 
+            var videoString = '<strong>Video #' + video.index + '</strong>: ';
+            videoString +=  video.dateUploaded.substring(0, 10) + '</br>';
+            videoString += '<p>' + 'Channel: ' + video.channelName.substring(0,video.channelName.length) + '</p>';
+            videoString += '<p>' + 'Video: '+ video.videoTitle + '</p>';
+            videoString += '<p>' + 'Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>';
+            videoString += '<p>' + video.likes + ' likes, ' +
+              video.dislikes + ' dislikes</p>';
+            videoDiv.html(videoString);
+          }
+        }
+       });
+    });
+  </script>
+</body>
           .node();
         hiddenCanvas.width = imageSize * scaleFactor;
         hiddenCanvas.height = imageSize * scaleFactor;
