@@ -21,38 +21,38 @@ SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
-allChannels = {"JakePaul": ["user", "JakePaulProductions"]}
-#                ,"LoganPaul":["channel","UCG8rbF3g2AMX70yOd8vqIZg"],
-#                "JennaMarbles":["user","JennaMarbles"],
-#                "ShaneDawson":["user","shane"],
-#                "LizaKoshyToo": ["channel","UChoTvF02Cv74FF72OaJtTMA"],
-#                "Superwoman":["user","IISuperwomanII"],
-#                "DavidDobrik":["channel","UCmh5gdwCx6lN7gEC20leNVA"],
-#                "KianAndJC": ["user","KianAndJc"],
-#                "AceFamily":["channel","UCWwWOFsW68TqXE-HZLC3WIA"],
-#                "RomanAtwoodVlogs":["user","RomanAtwoodVlogs"],
-#                "Shaytards":["user","SHAYTARDS"],
-#                "KYRsp33dy":["user","KYRSP33DY"],
-#                "Fitz":["channel","UCtb8P4rf_1n8KS8eZk_lNNw"],
-#                "Seananners":["user","SeaNanners"],
-#                "Vanoss":["user","VanossGaming"],
-#                "Hutch":["user","shaun0728"],
-#                "JeffreeStar":["user","jeffreestar"],
-#                "MannyMUA":["user","MannyMua733"],
-#                "JamesCharles":["channel","UCucot-Zp428OwkyRm2I7v2Q"],
-#                "JaclynHill":["user","Jaclynhill1"],
-#                "LauraDIY":["user","LaurDIY"],
-#                "BethanyMota":["user","Macbarbie07"],
-#                "SafiyaNygaard":["channel","UCbAwSkqJ1W_Eg7wr3cp5BUA"],
-#                "BuzzFeed":["user","BuzzFeedVideo"],
-#                "Peta":["user","officialpeta"],
-#                "FarmSanctuary":["user","farmsanctuary1"],
-#                "MercyForAnimals":["user","mercyforanimals"],
-#                "TheDodo":["user","TheDodoSite"]
-#               }
+allChannels = {"JakePaul": ["user", "JakePaulProductions"],
+               "LoganPaul":["channel","UCG8rbF3g2AMX70yOd8vqIZg"],
+               "JennaMarbles":["user","JennaMarbles"],
+               "ShaneDawson":["user","shane"],
+               "Superwoman":["user","IISuperwomanII"],
+               "DavidDobrik":["channel","UCmh5gdwCx6lN7gEC20leNVA"],
+               "KianAndJC": ["user","KianAndJc"],
+               "AceFamily":["channel","UCWwWOFsW68TqXE-HZLC3WIA"],
+               "RomanAtwoodVlogs":["user","RomanAtwoodVlogs"],
+               "Shaytards":["user","SHAYTARDS"],
+               "KYRsp33dy":["user","KYRSP33DY"],
+               "Fitz":["channel","UCtb8P4rf_1n8KS8eZk_lNNw"],
+               "Seananners":["user","SeaNanners"],
+               "Vanoss":["user","VanossGaming"],
+               "Hutch":["user","shaun0728"],
+               "JeffreeStar":["user","jeffreestar"],
+               "MannyMUA":["user","MannyMua733"],
+               "JamesCharles":["channel","UCucot-Zp428OwkyRm2I7v2Q"],
+               "JaclynHill":["user","Jaclynhill1"],
+               "LauraDIY":["user","LaurDIY"],
+               "BethanyMota":["user","Macbarbie07"],
+               "SafiyaNygaard":["channel","UCbAwSkqJ1W_Eg7wr3cp5BUA"],
+               "BuzzFeed":["user","BuzzFeedVideo"],
+               "Peta":["user","officialpeta"],
+               "FarmSanctuary":["user","farmsanctuary1"],
+               "MercyForAnimals":["user","mercyforanimals"],
+               "TheDodo":["user","TheDodoSite"]
+              }
+#"LizaKoshyToo": ["channel","UChoTvF02Cv74FF72OaJtTMA"]
+#allChannels = {"JaclynHill":["user","Jaclynhill1"]}
 channelVideos = {}
 channelComments = {}
-tryAgain = []
 
 def get_authenticated_service():
     flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
@@ -74,13 +74,14 @@ def channels_list_by_username(service, **kwargs):
     #print(results['items'][0])
     #print("# Videos:")
     #print(results['items'][0]['statistics']['videoCount'])
+    numViews = results['items'][0]['statistics']['viewCount']
     numVideos = results['items'][0]['statistics']['videoCount']
     numSubscribers = results['items'][0]['statistics']['subscriberCount']
     #print(results['items'][0]['contentDetails'])
     #print(numVideos)
 
     #reutnring video id for 1st video
-    return(numSubscribers,channelTitle, numVideos,results['items'][0]['contentDetails']['relatedPlaylists']['uploads'])
+    return(numSubscribers,channelTitle, numVideos,numViews,results['items'][0]['contentDetails']['relatedPlaylists']['uploads'])
 
 def playlist_items_list_by_playlist_id(numVideos,channelVideos, client, **kwargs):
   # See full sample for function
@@ -97,7 +98,7 @@ def playlist_items_list_by_playlist_id(numVideos,channelVideos, client, **kwargs
     #print("Video ID:")
     #print(response["items"][0]['snippet']['resourceId']['videoId']) #['resourceId']['videoId'])
     #print("ALL:")
-    print(response)
+    #print(response)
 
 
     #Bc max range is 50, only use 50 videos not numVideos
@@ -170,6 +171,9 @@ def videos_list_by_id(client, **kwargs):
                  numLikes.encode('utf-8'),
                  numDislikes.encode('utf-8'),
                  dateAndTimeUploaded.encode('utf-8')]
+
+        thumbnail = response['items'][0]['snippet']['thumbnails']['maxres']['url']
+        stats.append(thumbnail)
     except:
         print("no stats")
     return(stats)
@@ -189,8 +193,10 @@ def comment_threads_list_by_video_id(client, **kwargs):
     #print(response['items'][0]['snippet']['topLevelComment'])
     # print("Text:")
     # print(response['items'][0]['snippet'])#s['topLevelComment']['snippet']['textOriginal'])
+    #print(response['pageInfo']['totalResults'])
+    numComments = response['pageInfo']['totalResults']
     comments = []
-    for i in range(100):
+    for i in range(n):
         #print("Text:", i)
         #print(response['items'][i]['snippet'])  # s['topLevelComment']['snippet']['textOriginal'])
         text = response['items'][i]['snippet']['topLevelComment']['snippet']['textOriginal']
@@ -203,49 +209,39 @@ def comment_threads_list_by_video_id(client, **kwargs):
         comments.append(text)
 
     #print comments
-    token = response['nextPageToken']
-    return token, comments
+    if(numComments > 100):
+        token = response['nextPageToken']
+        return token, comments
+    return comments
     #print(response)
 
-#def get_comments():
+def getNumComments(client, **kwargs):
+    numComments = 0
+    try:
+        response = client.commentThreads().list(
+            **kwargs
+        ).execute()
+        numComments = response['pageInfo']['totalResults']
+    except:
+        print("disbaled")
+    return (numComments)
 
-# def tryAgain(dict):
-#     #gets comments per video in channelVideos dictionary
-#     for videoID in dict:
-#         #print(videoID)
-#         try:
-#             token, comments = comment_threads_list_by_video_id(service,
-#                                             part='snippet,replies',
-#                                             maxResults = 100,
-#                                             videoId=videoID)
-#             #time.sleep(1)
-#             for i in range(9):
-#                 #time.sleep(1)
-#                 token, nextComments = comment_threads_list_by_video_id(service,
-#                                                                 part='snippet,replies',
-#                                                                 maxResults=100,
-#                                                                 pageToken = token,
-#                                                                 videoId=videoID)
-#                 comments.extend(nextComments)
-#                 #print(len(comments))
-#         except:
-#             print("stupid piece of shit still isn't working")
-#             comments = []
-#             if videoID not in tryAgain:
-#                 tryAgain[videoID] = False
-#             else:
-#                 print("already exists in tryAgain")
-#
-#         time.sleep(1)
-#         #adds comments to channelComments dictionary
-#         if not comments:
-#
-#         if videoID not in channelComments:
-#             print(videoID)
-#             channelComments[videoID]= comments
-#         else:
-#             print("already exists in channelComments")
-#     return dict
+def video_categories_list(client, **kwargs):
+  # See full sample for function
+  #kwargs = remove_empty_kwargs(**kwargs)
+
+  response = client.videoCategories().list(
+    **kwargs
+  ).execute()
+  catList = []
+  for i in range(31):
+      assign = response['items'][i]['snippet']['assignable']
+      if assign == True:
+          title = response['items'][i]['snippet']['title']
+          catList.append(title)
+  catStr = "; ".join(catList)
+
+  return catStr
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
@@ -262,16 +258,18 @@ if __name__ == '__main__':
         #if you're using CHANNELID use this code
         #returns the channel's title and total number of videos
         if start == "channel":
-            numSubscribers,channelTitle, numVideos,uploadsID = channels_list_by_username(service,
+            numSubscribers,channelTitle, numVideos,numViews,uploadsID = channels_list_by_username(service,
                                 part='snippet,contentDetails,statistics',
                                 id= idStr)
+            link = "www.youtube.com/channel/" + idStr
 
         #if you're using USDERID use this code
         #returns the channel's title and total number of videos
         if start == "user":
-            numSubscribers,channelTitle, numVideos,uploadsID = channels_list_by_username(service,
+            numSubscribers,channelTitle, numVideos,numViews,uploadsID = channels_list_by_username(service,
                                 part='snippet,contentDetails,statistics',
                                 forUsername= idStr)
+            link = "www.youtube.com/user/" + idStr
 
         #adds the channel's videos' ID to a dictionary (max 50 videos)
         #returns nextPageToken to get videos past the maxed number
@@ -281,22 +279,31 @@ if __name__ == '__main__':
                                            playlistId= uploadsID)
 
         #run again w/ pageToken to retrieve 150 more videos
+        print(numVideos)
+        numVideos = int(numVideos)
         n = 1
         if numVideos < 200:
             n=3
-        for i in range(n):
-            #print("a")
-            token = playlist_items_list_by_playlist_id(numVideos, channelVideos, service,
-                                               part='snippet,contentDetails',
-                                               maxResults= 50,
-                                               pageToken = token,
-                                               playlistId= uploadsID)
+        if numVideos>60:
+            for i in range(n):
+                #print("a")
+                print('here')
+                token = playlist_items_list_by_playlist_id(numVideos, channelVideos, service,
+                                                   part='snippet,contentDetails',
+                                                   maxResults= 50,
+                                                   pageToken = token,
+                                                   playlistId= uploadsID)
 
         #returns stats for all videos in the channelVideos dictionary
         for videoID in channelVideos:
             #print(videoID)
             #print(channelVideos[videoID])
             #stats list includes # views, # likes, # dislikes, date video was uploaded
+
+            catStr = video_categories_list(service,
+                                  part='snippet',
+                                  regionCode='US')
+
             stats = videos_list_by_id(service,
                           part='snippet,contentDetails,statistics',
                           id= videoID)
@@ -307,14 +314,19 @@ if __name__ == '__main__':
             stats.append(idStr)
             stats.append(channelTitle)
             stats.append(numSubscribers)
+            stats.append(numViews)
+            stats.append(link)
+            stats.append('https://www.youtube.com/watch?v='+videoID)
+            stats.append(catStr)
+            stats.append(numVideos)
             #updates dictionary value to stats list
             channelVideos[videoID] = stats
 
         #writes video stats to CSV
         #header: videoId (key), views, commmets, likes, dislikes, dateUploaded, videoTitle, channelId, channelName
         fileStr  = channelStr + ".csv"
-        with open(fileStr, 'w') as file:
-            file.write('videoId,views,comments,likes,dislikes,dateUploaded,videoTitle,channelId,channelName,subscribers')
+        with open(fileStr, 'w+') as file:
+            file.write('videoId,views,comments,likes,dislikes,dateUploaded,thumbnailURL,videoTitle,channelId,channelName,subscribers,numViews,channelURL,videoURl,categories,numVideos')
             file.write('\n')
             for videoID in channelVideos:
                 #ignores any videos whose title was giving an error due to emojis or other characters not in ASCII
@@ -325,55 +337,51 @@ if __name__ == '__main__':
                 except:
                     print("there was a problem")
                 #print(row)
-        #time.sleep(1)
-        #channelVideos = {}
 
-
-
-
-    #tryAgain = {}
     #gets comments per video in channelVideos dictionary
         #print(channelVideos)
         for videoID in channelVideos:
             #print(videoID)
            # try:
                 #print("yaass")
-                token, comments = comment_threads_list_by_video_id(service,
+                numComments = getNumComments(service,
                                                 part='snippet,replies',
-                                                maxResults = 100,
                                                 videoId=videoID)
-                #time.sleep(1)
-                #for i in range(9):
-                    #time.sleep(1)
-                token, nextComments = comment_threads_list_by_video_id(service,
-                                                                    part='snippet,replies',
-                                                                    maxResults=100,
-                                                                    pageToken = token,
-                                                                    videoId=videoID)
-                comments.extend(nextComments)
-                #print(comments)
-                    #print(len(comments))
-            # except:
-            #     print("stupid piece of shit still isn't working")
-            #     comments = []
-            #     if videoID not in tryAgain:
-            #         tryAgain[videoID] = False
-            #     else:
-            #         print("already exists in tryAgain")
+                #print(numComments)
+                if numComments < 100 and numComments != 0:
+                    comments = comment_threads_list_by_video_id(service,
+                                                                       part='snippet,replies',
+                                                                       maxResults=numComments,
+                                                                       videoId=videoID)
+                elif numComments != 0 and numComments > 200:
+                    token, comments = comment_threads_list_by_video_id(service,
+                                                    part='snippet,replies',
+                                                    maxResults = 100,
+                                                    videoId=videoID)
+                    token, nextComments = comment_threads_list_by_video_id(service,
+                                                                        part='snippet,replies',
+                                                                        maxResults=100,
+                                                                        pageToken = token,
+                                                                        videoId=videoID)
+                    comments.extend(nextComments)
+                else:
+
+                    #print(numComments)
+                    comments = ['none']
 
                 time.sleep(1)
             #adds comments to channelComments dictionary
                 if videoID not in channelComments:
-                    print(videoID)
+                    #print(videoID)
                     channelComments[videoID]= comments
                 else:
                     print("already exists in channelComments")
-        #print(channelComments)
+
         #writes out all comments into CSV file
         #header: videoID (key), comment, channelId, channelName
         cmmtfileStr = channelStr + "Comments.csv"
        # print(cmmtfileStr)
-        with open(cmmtfileStr, 'w') as file:
+        with open(cmmtfileStr, 'w+') as file:
             file.write('videoId,comment,channelId,channelName')
             file.write('\n')
             for videoID in channelVideos:
