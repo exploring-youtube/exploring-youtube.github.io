@@ -32,7 +32,7 @@ var rowConverter = function(d) {
           frequency: parseInt(d.frequency)
         }
       }
-d3.csv("word_frequency2.csv", rowConverter, function(data){   
+d3.csv("data/word_frequency2.csv", rowConverter, function(data){   
 
     //bubbles needs very specific format, convert data to this.
     console.log(data);
