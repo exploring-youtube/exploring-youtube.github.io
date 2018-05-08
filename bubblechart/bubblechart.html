@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+    <title>D3: A simple packed Bubble Chart</title>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style type="text/css">
+      /* No style rules here yet */   
+    </style>
+</head>
+<body>
+  <script type="text/javascript">
+
+var diameter = 500, //max size of the bubbles
+    color = d3.scaleOrdinal(d3.schemeCategory20c); //color category
+
+var bubble = d3.pack()
+    .size([diameter, diameter])
+    .padding(1.5);
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", diameter)
+    .attr("height", diameter)
+    .attr("class", "bubble");
+
+var rowConverter = function(d) {
+        return {
+          videoID: d.videoID,
+          word: d.word,
+          frequency: parseInt(d.frequency)
+        }
+      }
+d3.csv("word_frequency2.csv", rowConverter, function(data){   
+
+    //bubbles needs very specific format, convert data to this.
+    console.log(data);
+    var nodes = d3.hierarchy({children: data})
+            .sum(function(d) { return d.frequency; });
+            //.sort(function(a, b) { return b.frequency - a.frequency;
+
+    //setup the chart
+    var node = svg.selectAll(".node")
+            .data(bubble(nodes).descendants())
+            .enter()
+            .filter(function(d){
+                return !d.children
+            })
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+    console.log(node);
+
+        node.append("title")
+            .text(function(d) {
+                return d.data.word + ": " + d.data.frequency;
+            });
+
+        node.append("circle")
+            .attr("r", function(d) {
+                return d.r;
+            })
+            .style("fill", function(d,i) {
+                return color(i);
+            });
+
+        node.append("text")
+            .attr("dy", ".2em")
+            .style("text-anchor", "middle")
+            .text(function(d) {
+                return d.data.word.substring(0, d.r / 3);
+                //return d.word;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", function(d){
+                return d.r/5;
+            })
+            .attr("fill", "white");
+
+        node.append("text")
+            .attr("dy", "1.3em")
+            .style("text-anchor", "middle")
+            .text(function(d) {
+                //return d.data.frequency;
+                return d.data.frequency;
+            })
+            .attr("font-family",  "Gill Sans", "Gill Sans MT")
+            .attr("font-size", function(d){
+                return d.r/5;
+            })
+            .attr("fill", "white");
+
+        d3.select(self.frameElement)
+            .style("height", diameter + "px");
+
+});
+
+
+</script>
+</body>
+</html>
