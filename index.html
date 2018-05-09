@@ -64,7 +64,7 @@ img.resize {
 div.tooltip { 
     position: absolute;     
     text-align: center;     
-    width: 250px;          
+    width: 280px;          
     height: 28px;         
     /*padding: 2px;*/       
     font: 12px sans-serif;    
@@ -153,8 +153,8 @@ div.tooltip2 {
             <!-- ShaneDawson--> 
             <div id="shane" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3QI5E-AkCovZOnP5ElY31WKwsFM7aJLKI7sA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
             </div>
-            <!-- LizaKoshy--> 
-            <div id="UCxSz6JVYmzVhtkraHWZC7HQ" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2J-5H6oGJ_DpzeD7-AQtwRLrTM-9n9gQItcg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            <!-- LizaKoshy-->  
+            <div id="UChoTvF02Cv74FF72OaJtTMA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2J-5H6oGJ_DpzeD7-AQtwRLrTM-9n9gQItcg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
             </div>
             <!-- SuperWoman--> 
             <div id="IISuperwomanII" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0mlkzaLGZA8v0cNHzM11d72hogR4_gAlqqRQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
@@ -743,10 +743,11 @@ d3.csv("allVideoData2.csv", function(error, data) {
               var videoString = '<strong>Video #' + video.index + '</strong>: ';
               videoString +=  video.dateUploaded.substring(0, 10) + '</br>';
               videoString += '<p>' + 'Channel: ' + video.channelName.substring(0,video.channelName.length) + '</p>';
-              videoString += '<p>' + 'Video: '+ video.videoTitle + '</p>';
-              videoString += '<p>' + 'Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>';
-              videoString += '<p>' + video.likes + ' likes, ' +
-                video.dislikes + ' dislikes</p>';
+              videoString += '<p>' + 'Title: '+ video.videoTitle + '</p>';
+              videoString += '<p>' + '# Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>'; 
+              //Number(d.views).toLocaleString('en')
+              videoString += '<p>' + Number(video.likes).toLocaleString('en') + ' likes, ' +
+                Number(video.dislikes).toLocaleString('en') + ' dislikes</p>';
               videoDiv.html(videoString);
               videoDiv.transition()    
                 .duration(500)    
@@ -774,8 +775,8 @@ function myFunction(buttonId){
   var myElement = document.getElementById("Channel");
   document.getElementById("Channel").innerHTML = "Channel: "+
     '<a href="' + "http://" +list[0].channelURL+'">' + list[0].channelName +'</a>';
-  document.getElementById("Subscribers").innerHTML = "# Subscribers:" + Number(list[0].subscribers).toLocaleString('en');
-  document.getElementById("ChannelViews").innerHTML = "# Channel Views:" + Number(list[0].numViews).toLocaleString('en');
+  document.getElementById("Subscribers").innerHTML = "# Subscribers: " + Number(list[0].subscribers).toLocaleString('en');
+  document.getElementById("ChannelViews").innerHTML = "# Channel Views: " + Number(list[0].numViews).toLocaleString('en');
  } 
 
 function update(data){
@@ -785,6 +786,7 @@ function update(data){
   d3.selectAll(".x-Axis").remove();
   d3.selectAll(".y-Axis").remove();
   d3.selectAll("dot").remove();
+  //d3.selectAll("div.tooltip").remove();
 
   x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
   y.domain([0, d3.max(data, function(d) {return d.views; })]);
@@ -808,6 +810,7 @@ function update(data){
       .on("click", function(d){
           //console.log(d.videoURl);
             //d3.selectAll(".node").remove();
+            //.attr("fill","red");
             d3.select("svg.bubble").remove();
             var myElement = document.getElementById("thumbnail");
             document.getElementById("thumbnail").innerHTML =
@@ -815,27 +818,22 @@ function update(data){
             div.transition()    
               .duration(200)    
               .style("opacity", .9);    
-            div.html("Title: " + d.videoTitle + "<br/>" + "Date Uploaded: " + d.dateUploaded.toLocaleDateString() + "<br/>"  + "# Views: " + d.views)
+            div.html("Title: " + d.videoTitle + "<br/>" + "Date Uploaded: " + d.dateUploaded.toLocaleDateString() + "<br/>"  + "# Views: " + Number(d.views).toLocaleString('en')
+              +"<br/>" + "# Likes: " + Number(d.likes).toLocaleString('en')
+              +"<br/>" + "# Dislikes: " + Number(d.dislikes).toLocaleString('en')
+              +"<br/>" + "# Comments: " + Number(d.comments).toLocaleString('en'))
             console.log(d.videoId);
             console.log(String(d.videoId));
             bubbleChart(String(d.videoId));
             //bubbleChart("wdSXvTCksFA");
             
-        });  
-      //<a href="../html-link.htm"><img src="flower.jpg" width="82" height="86" title="White flower" alt="Flower"></a>
-    //   .on("mouseover", function(d) {    
-    //     div.transition()    
-    //       .duration(200)    
-    //       .style("opacity", .9);    
-    //     div.html(d.videoTitle + "<br/>" + d.dateUploaded.toLocaleDateString() + "<br/>"  + d.views) 
-    //       // .style("left", (d3.event.pageX) + "px")   
-    //       // .style("top", (d3.event.pageY - 28) + "px");  
-    //  })          
-    // .on("mouseout", function(d) {   
-    //   div.transition()    
-    //       .duration(500)    
-    //       .style("opacity", 0); 
-    // });
+        })  
+      .on("mouseover", function(d) {    
+        d3.select(this).style("fill", "red");  
+     })      
+    .on("mouseout", function(d) {   
+      d3.select(this).style("fill", "black");  
+    });
 
   // add the x-axis
   svg.append("g")
@@ -1116,10 +1114,11 @@ function createCanvas(buttonId){
               var videoString = '<strong>Video #' + video.index + '</strong>: ';
               videoString +=  video.dateUploaded.substring(0, 10) + '</br>';
               videoString += '<p>' + 'Channel: ' + video.channelName.substring(0,video.channelName.length) + '</p>';
-              videoString += '<p>' + 'Video: '+ video.videoTitle + '</p>';
-              videoString += '<p>' + 'Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>';
-              videoString += '<p>' + video.likes + ' likes, ' +
-                video.dislikes + ' dislikes</p>';
+              videoString += '<p>' + 'Title: '+ video.videoTitle + '</p>';
+              videoString += '<p>' + '# Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>'; 
+              //Number(d.views).toLocaleString('en')
+              videoString += '<p>' + Number(video.likes).toLocaleString('en') + ' likes, ' +
+                Number(video.dislikes).toLocaleString('en') + ' dislikes</p>';
               videoDiv.html(videoString);
               videoDiv.transition()    
                 .duration(500)    
