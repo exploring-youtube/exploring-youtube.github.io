@@ -1,4 +1,4 @@
-#<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 
@@ -11,27 +11,42 @@
 
 <style>
 
+/* basic positioning */
+.legend { list-style: none; }
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+/* your colors */
+.legend .before { background-color:#D3D3D3; }
+.legend .after { background-color: #808080; }
+.legend .channel { background-color: #FF0000; }
+
 img {
     border-radius: 50%;
 }
 
+img.resize {
+  max-width:60%;
+  max-height:60%;
+}
+
 .button {
-    height: 40px; 
-    width: 40px;
+    height: 15px; 
+    width: 15px;
     background-repeat:no-repeat;
     border: none;
     border-radius: 50%;
-    padding: 85px 85px;
-    text-align: center;
+    padding: 20px 20px;
+    text-align: left;
     display: inline-block;
     cursor:pointer;
     overflow: hidden;
     outline:none;
+    background-size: 40px 40px;
 }
 
-.row{
+/*.row{
 	text-align: center;
-}
+}*/
 
 .header {
   font-size: "30";
@@ -39,7 +54,7 @@ img {
 
 .line {fill: none;
   stroke: grey;
-  stroke-width: 3px;}
+  stroke-width: 2px;}
 
 .line zero {fill: red;
   stroke: red;
@@ -49,21 +64,21 @@ img {
 div.tooltip { 
     position: absolute;     
     text-align: center;     
-    width: 60px;          
+    width: 250px;          
     height: 28px;         
-    padding: 2px;       
+    /*padding: 2px;*/       
     font: 12px sans-serif;    
     border: 0px;    
     border-radius: 8px;     
     pointer-events: none;
     opacity: 1; 
-    background: lightsteelblue;    
+    background: none;    
 }
 
 div.tooltip2 { 
     position: absolute;     
     text-align: center;     
-    width: 60px;          
+    width: 300px;          
     height: 28px;         
     padding: 2px;       
     font: 12px sans-serif;    
@@ -72,6 +87,14 @@ div.tooltip2 {
     pointer-events: none;
     opacity: 1;   
     background: none;  
+}
+
+.channelBorder {
+    width: 300px;
+    height: 150px;    
+    padding: 50px;
+    border: 1px solid red;
+    box-sizing: border-box;
 }
 
 </style>
@@ -88,94 +111,384 @@ div.tooltip2 {
     <font color="white">Exploring YouTube Data</font> </h1>
 </div>
 
-<div>
+<div class = 'row'>
+  <div class = 'col-sm-4' id = 'logo'>
+    <h2> All Channel Videos: </h2> 
+  </div>
+  <div class = 'col-sm-4' id = 'logoDetails'>
+<!--     <h2> YouTuber: </h2>
+    <p id ="Channel"> Channel: </p>
+    <p id ="Subscribers"> # Subscribers: </p>
+    <p id ="ChannelViews"> # Channel Views: </p> -->
+    <ul class="legend" style="margin:65px">
+      <li><span class="before"></span>Before YouTube Policy Change</li>
+      <li><span class="after"></span>After YouTube Policy Change</li>
+      <li><span class="channel"></span>Channel Selected Videos</li>
+    </ul>
+    <p id ="tooltip2"></p>
+
+  </div>
+  <div class = 'col-sm-4' id = 'Buttons'>
+    <div id = 'YoutuberDetails'>
+      <h2> YouTuber: </h2>
+      <p id ="Channel"> Channel: </p>
+      <p id ="Subscribers"> # Subscribers: </p>
+      <p id ="ChannelViews"> # Channel Views: </p>
+    </div>
 <!--   <div class="w3-container">
     <h2 style = "padding-left: 20px"> watch time vs. age group</h2>
-  </div> -->
+  </div> --><!-- 
+    <h2 style = 'margin-left:500px;'> YouTuber: </h2> -->
+  	<divs>
+  	<h2> Channels: </h2>
+            <!-- JakePaul--> 
+  					<div id="JakePaulProductions" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1P1J9k7YQQe7y5b3a8EL6_jOvqAY9Y8BTdUA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+  					</div>
+            <!--LoganPaul--> 
+            <div id="UCG8rbF3g2AMX70yOd8vqIZg" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2MWXFh1__yVJcxVDlZD4H3_TLbL2YvJ20N0w=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- JennaMarbles--> 
+            <div id="JennaMarbles" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3i42R_YFWb5-KUU5xpASf7kkHNO8pH12_QlA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- ShaneDawson--> 
+            <div id="shane" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3QI5E-AkCovZOnP5ElY31WKwsFM7aJLKI7sA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- LizaKoshy--> 
+            <div id="UCxSz6JVYmzVhtkraHWZC7HQ" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2J-5H6oGJ_DpzeD7-AQtwRLrTM-9n9gQItcg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- SuperWoman--> 
+            <div id="IISuperwomanII" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0mlkzaLGZA8v0cNHzM11d72hogR4_gAlqqRQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- DavidDorbik--> 
+            <div id="UCmh5gdwCx6lN7gEC20leNVA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3CLep9BL-D8jOk9GnPmAmARUSld907h5IJug=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- KnJ--> 
+            <div id="KianAndJc" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3emwV2ixzz6RDWUMKIVLL7EGpr71WQ40HIFg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- AceFamily--> 
+            <div id="UCWwWOFsW68TqXE-HZLC3WIA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1l3vCD8RZeuAKDNU1-vcYiyywTR1G02ghwKQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- RomanAtwoodVlogs--> 
+            <div id="RomanAtwoodVlogs" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1ORrFrZzNW1gYdlIxi2er7-xipSr0ol5Xj4Q=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- Shaytards--> 
+            <div id="SHAYTARDS" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp02ZLUQ2XQl3psSZZ7rnzyG4O08uHB5L04_IQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div> 
+            <!-- KYRSP33DY--> 
+            <div id="KYRSP33DY" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0hyrPYjmv84g8jRNlyuKxKS3ctr0xjVJFjmQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- Fitz--> 
+            <div id="UCtb8P4rf_1n8KS8eZk_lNNw" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1MOJxmEz4SDxY9P1DttlL02V9sruO9y7izTg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- VanossGaming--> 
+            <div id="VanossGaming" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3V68_5qWNIAZPszgH4jsOgxEf2JWUb6rAOUw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!--Hutch--> 
+            <div id="shaun0728" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2WMqr78xrJZBqudel1PIvRzCu5RxGz7qC4eg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- JeffreeStar--> 
+            <div id="jeffreestar" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0mcg9GRD6lSbkMShguRmxhFERFExZaY-d-gQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- MannyMUA--> 
+            <div id="MannyMua733" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0sbrPtNOR0YCpDpSA8-UItTQ5VfumXw_fnBw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- JamesCharles--> 
+            <div id="UCucot-Zp428OwkyRm2I7v2Q" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3BJViRnCz7oy0jDcawVsCaDIDO50QUjtl2Ig=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div> 
+            <!-- JaclynHill--> 
+            <div id="Jaclynhill1" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0v403iSA6sRpqvG5IGWRm-I5RmtCcUkdUvMw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+             <!-- LaurDIY--> 
+            <div id="LaurDIY" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0vxDPP7vAEyucee76bZ-sBuNkhDH8CjmifVA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- BethanyMota--> 
+            <div id="Macbarbie07" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3R3V237-dgkh3wurEQKAX_uWnZhtD2XSfIBA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- Safiya--> 
+            <div id="UCbAwSkqJ1W_Eg7wr3cp5BUA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0UAziB23a_aRzCw-azElEHckq0mRzv3WxR9Q=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>  
+            <!-- Safiya--> 
+            <div id="BuzzFeedVideo" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3JmZsMr1fLjNl3peeE8TobwvNjP-vao8jq6w=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
 
-	<div class='row'>
-	<h2> Channels </h2>
-          <!-- JakePaul--> 
-					<div id="JakePaulProductions" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1P1J9k7YQQe7y5b3a8EL6_jOvqAY9Y8BTdUA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-					</div>
-          <!--LoganPaul--> 
-          <div id="UCG8rbF3g2AMX70yOd8vqIZg" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2MWXFh1__yVJcxVDlZD4H3_TLbL2YvJ20N0w=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- JennaMarbles--> 
-          <div id="JennaMarbles" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3i42R_YFWb5-KUU5xpASf7kkHNO8pH12_QlA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- ShaneDawson--> 
-          <div id="shane" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3QI5E-AkCovZOnP5ElY31WKwsFM7aJLKI7sA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- LizaKoshy--> 
-          <div id="UCxSz6JVYmzVhtkraHWZC7HQ" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2J-5H6oGJ_DpzeD7-AQtwRLrTM-9n9gQItcg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- SuperWoman--> 
-          <div id="IISuperwomanII" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0mlkzaLGZA8v0cNHzM11d72hogR4_gAlqqRQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- DavidDorbik--> 
-          <div id="UCmh5gdwCx6lN7gEC20leNVA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3CLep9BL-D8jOk9GnPmAmARUSld907h5IJug=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- KnJ--> 
-          <div id="KianAndJc" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3emwV2ixzz6RDWUMKIVLL7EGpr71WQ40HIFg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- AceFamily--> 
-          <div id="UCWwWOFsW68TqXE-HZLC3WIA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1l3vCD8RZeuAKDNU1-vcYiyywTR1G02ghwKQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- RomanAtwoodVlogs--> 
-          <div id="RomanAtwoodVlogs" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1ORrFrZzNW1gYdlIxi2er7-xipSr0ol5Xj4Q=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- Shaytards--> 
-          <div id="SHAYTARDS" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp02ZLUQ2XQl3psSZZ7rnzyG4O08uHB5L04_IQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div> 
-          <!-- KYRSP33DY--> 
-          <div id="KYRSP33DY" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0hyrPYjmv84g8jRNlyuKxKS3ctr0xjVJFjmQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- Fitz--> 
-          <div id="UCtb8P4rf_1n8KS8eZk_lNNw" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1MOJxmEz4SDxY9P1DttlL02V9sruO9y7izTg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- VanossGaming--> 
-          <div id="VanossGaming" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3V68_5qWNIAZPszgH4jsOgxEf2JWUb6rAOUw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!--Hutch--> 
-          <div id="shaun0728" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2WMqr78xrJZBqudel1PIvRzCu5RxGz7qC4eg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- JeffreeStar--> 
-          <div id="jeffreestar" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0mcg9GRD6lSbkMShguRmxhFERFExZaY-d-gQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- MannyMUA--> 
-          <div id="MannyMua733" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0sbrPtNOR0YCpDpSA8-UItTQ5VfumXw_fnBw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- JamesCharles--> 
-          <div id="UCucot-Zp428OwkyRm2I7v2Q" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3BJViRnCz7oy0jDcawVsCaDIDO50QUjtl2Ig=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div> 
-          <!-- JaclynHill--> 
-          <div id="Jaclynhill1" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0v403iSA6sRpqvG5IGWRm-I5RmtCcUkdUvMw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-           <!-- LaurDIY--> 
-          <div id="LaurDIY" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0vxDPP7vAEyucee76bZ-sBuNkhDH8CjmifVA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- BethanyMota--> 
-          <div id="Macbarbie07" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3R3V237-dgkh3wurEQKAX_uWnZhtD2XSfIBA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-          <!-- Safiya--> 
-          <div id="UCbAwSkqJ1W_Eg7wr3cp5BUA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0UAziB23a_aRzCw-azElEHckq0mRzv3WxR9Q=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>  
-          <!-- Safiya--> 
-          <div id="BuzzFeedVideo" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3JmZsMr1fLjNl3peeE8TobwvNjP-vao8jq6w=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-          </div>
-
-
-			<svg class='chart'>
-			</svg>
-	</div>
+  <!-- 			<svg class='chart'>
+  			</svg> -->
+    </divs>
+  </div>  
 </div>
+<div class = 'row'>
+  <div class = 'col-sm-5' id = 'lineGraph'>
+    <h2> Channel's Videos' Stats Over Time: </h2> 
+  </div>
+  <div class = 'col-sm-3' id = 'vid'>
+    <h2> Video Details: </h2> 
+    <p id ="thumbnail"></p>
+    <p id ="tooltip"></p>
+  </div>
+  <div class = 'col-sm-3' id = 'bubbleCmmt'>
+    <h2> Comments: </h2> 
+  </div>
+</div> 
 </body>
 
 
 
 <script>
 
+function bubbleChart(vidId){
+  var diameter = 400, //max size of the bubbles
+      color = d3.scaleOrdinal(d3.schemeCategory20c); //color category
+  var bubble = d3.pack()
+      .size([diameter, diameter])
+      .padding(1.5);
+  var svg2 = d3.select("#bubbleCmmt")
+      .append("svg")
+      .attr("width", diameter)
+      .attr("height", diameter)
+      .attr("class", "bubble");
+
+  var rowConverter = function(d) {
+        if(d.videoID == vidId){
+          return {
+            videoID: d.videoID,
+            word: d.word,
+            frequency: parseInt(d.frequency)
+          }
+        }
+  }          
+
+  d3.csv("word_frequency2.csv", rowConverter, function(data){
+    //formating data 
+  //d3.csv("word_frequency2.csv", rowConverter, function(data){   
+      //bubbles needs very specific format, convert data to this.
+      console.log(data);
+      var nodes = d3.hierarchy({children: data})
+              .sum(function(d) { return d.frequency; });
+              //.sort(function(a, b) { return b.frequency - a.frequency;
+      //setup the chart
+    //var node = svg.selectAll(".node")
+    var node = svg2.selectAll(".node")
+              .data(bubble(nodes).descendants())
+              .enter()
+              .filter(function(d){
+                  return !d.children
+              })
+              .append("g")
+              .attr("class", "node")
+              .attr("transform", function(d) {
+                  return "translate(" + d.x + "," + d.y + ")";
+              });
+          node.append("title")
+              .text(function(d) {
+                  return d.data.word + ": " + d.data.frequency;
+              });
+          node.append("circle")
+              .attr("r", function(d) {
+                  return d.r;
+              })
+              .style("fill", function(d,i) {
+                  return color(i);
+              });
+          node.append("text")
+              .attr("dy", ".2em")
+              .style("text-anchor", "middle")
+              .text(function(d) {
+                  //console.log(d.data.word)
+                  return d.data.word.substring(0, d.r / 3);
+                  //return d.word;
+              })
+              .attr("font-family", "sans-serif")
+              .attr("font-size", function(d){
+                  return d.r/5;
+              })
+              .attr("fill", "white");
+          node.append("text")
+              .attr("dy", "1.3em")
+              .style("text-anchor", "middle")
+              .text(function(d) {
+                  //return d.data.frequency;
+                  return d.data.frequency;
+              })
+              .attr("font-family",  "Gill Sans", "Gill Sans MT")
+              .attr("font-size", function(d){
+                  return d.r/5;
+              })
+              .attr("fill", "white");
+          d3.select(self.frameElement)
+              .style("height", diameter + "px");
+          console.log("done");
+          // d3.select(self.frameElement)
+          //     .style("height", 100 + "px");    
+
+  }); 
+}
+ /////////////////////////////////////////////////////////////////////////////////////////////// 
+
+var parseTime = d3.timeParse("%Y-%m-%d");
+// set the dimensions and margins of the graph
+var margin = {top: 50, right: 50, bottom: 100, left: 100},
+    //width = 960 - margin.left - margin.right,
+    width = 520 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var parseTime = d3.timeParse("%Y-%m-%d");
+var z = d3.scaleOrdinal(d3.schemeCategory10);
+// set X and Y axis
+var x = d3.scaleTime()
+          .range([0, width]);
+          //.padding(0.1);
+var y = d3.scaleLinear()
+          .range([height, 0]);
+     
+var valueline = d3.line()
+  .x(function(d) {return x(d.dateUploaded);})
+  .y(function(d) {return y(d.views);});
+
+var xAxis = d3.axisBottom(x)
+              .ticks(7,",f");
+var yAxis = d3.axisLeft(y)
+              .ticks(7,",f");
+
+// Define the div for the tooltip
+var div = d3.select("p#tooltip").append("div") 
+    .attr("class", "tooltip")
+    //.style("left", 30 + "px")   
+    .style("top", 220 + "px")     
+    .style("opacity", 0);
+
+
+//create svg
+var svg = d3.select("#lineGraph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    //.attr("transform", 
+       // "translate(" + margin.left + "," + 1000 + ")") //fix
+    .append("g")
+    .attr("transform", 
+        "translate(" + margin.left + "," + margin.top + ")");
+
+
+//set up data
+var dict = new Map();
+var map1 = new Map();
+var policyDate = new Date("2018-02-20");
+
+d3.csv("allVideoData2.csv", function(error, data) {
+  if (error) throw error;
+
+  //formating data
+  data.forEach(function(d) {
+    d.dateUploaded = parseTime(d.dateUploaded.substring(0, 10));
+    d.channelId = d.channelId;
+    d.views = +d.views;
+    d.thumbnailURL = d.thumbnailURL;
+    d.videoURL = d.videoURL;
+
+    if (dict.has(d.channelId)){
+      var results = dict.get(d.channelId);
+      results.push(d);
+      dict.set(d.channelId,results);
+    }else{
+      dict.set(d.channelId,[d]);
+    }
+
+  });
+
+
+  var list = dict.get("JakePaulProductions");
+  var myElement = document.getElementById("Channel");
+  document.getElementById("Channel").innerHTML = "Channel: "+
+    '<a href="http://www.youtube.com/user/JakePaulProductions">' + list[0].channelName +'</a>';
+  document.getElementById("Subscribers").innerHTML = "# Subscribers:" + Number(list[0].subscribers).toLocaleString('en');
+  document.getElementById("ChannelViews").innerHTML = "# Channel Views:" + Number(list[0].numViews).toLocaleString('en');
+
+  // add the x-axis
+  svg.append("g")
+    .attr("class","x-Axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis
+      .tickFormat(d3.timeFormat("%Y-%m-%d")))
+    .selectAll("text") 
+    .style("text-anchor", "end")
+    .attr("dx", ".8em")
+    .style("font-size", "15px") 
+    .attr("dy", ".75em")
+    .attr("transform",  "rotate(-35)");
+     
+  // add the y-axis
+  svg.append("g")
+    .attr("class","y-Axis")
+    .call(yAxis);
+
+  svg.append("line")
+    .attr("class", "zero")
+    .attr("stroke","red")
+    .attr("stroke-width", 3)
+    .attr("x1", x(policyDate))
+    .attr("y1", height)
+    .attr("x2", x(policyDate))
+    .attr("y2", 0);
+
+  // svg.selectAll("dot")  
+  //   .data(data)     
+  //   .enter().append("circle")               
+  //     .attr("r", 3)   
+  //     .attr("cx", function(d) { return x(d.dateUploaded); })     
+  //     .attr("cy", function(d) { return y(d.views); }) 
+    //   .on("mouseover", function(d) {   
+    //     div.transition()    
+    //       .duration(200)    
+    //       .style("opacity", .9);    
+    //     div.html(d.videoTitle + "<br/>" + d.dateUploaded.toLocaleDateString() + "<br/>"  + d.views) 
+    //     //console.log(d.thumbnailURL);  
+    //     console.log(d.videoId);
+    //     console.log(String(d.videoId));
+    //     bubbleChart(String(d.videoId));
+    //       // .style("left", (d3.event.pageX) + "px")   
+    //       // .style("top", (d3.event.pageY - 28) + "px");  
+    //  })          
+    // .on("mouseout", function(d) {   
+    //   div.transition()    
+    //       .duration(500)    
+    //       .style("opacity", 0); 
+    // })
+    // .on("click", function(){
+    //       console.log('hi');
+    //         var myElement = document.getElementById("thumbnail");
+    //         document.getElementById("thumbnail").innerHTML =
+    //         '<a href="' + d.videoURl+'"><img src ="' + d.thumbnailURL +'" width = "200" height = "150" style = "border-radius:25px;margin-left: 20px;"></a>';
+    //         div.transition()    
+    //           .duration(200)    
+    //           .style("opacity", .9);    
+    //         div.html("Title: " + d.videoTitle + "<br/>" + "Date Uploaded: " + d.dateUploaded.toLocaleDateString() + "<br/>"  + "# Views: " + d.views)
+    //         console.log(d.videoId);
+    //         console.log(String(d.videoId));
+    //         bubbleChart(String(d.videoId));
+    //     });
+      
+
+    // add x-axis label
+  svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width/2)
+      .attr("y", height + 50)
+      .text("Date");
+
+  //add y-axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x",0 - (height / 2))
+    .attr("y", 0 - margin.left + 20)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Views");
+
+
+  update(dict.get("JakePaulProductions"));
+
+ });
+
+///////////////////////////////////////////////////////////////////////////////////////////
   //d3.select('svg').selectAll('*').remove();
   // Set new data on your chart:
   // var items = d3.select('svg').selectAll('.item').data(newData);
@@ -185,7 +498,7 @@ div.tooltip2 {
 
   d3.json('youtubeIMG2.json', function(image) {
         d3.json('vids.json', function(videos) {
-
+        //d3.json('vids2.json', function(videos) {
           //some defaults for the image
           var imageSize = Math.sqrt(image.length);
           var scaleFactor = Math.floor(500 / imageSize);
@@ -194,23 +507,42 @@ div.tooltip2 {
           var padding = 20;
 
           //set up canvas and hidden canvas
-          var canvas = d3.select('body').append('canvas')
-            .on('mousemove', mousemove).node();
+          var canvas = d3.select('#logo')
+            // .attr("transform", 
+            //     "translate(" + margin.left + "," + 700 + ")") //fix
+            .append('canvas')
+            .on('mousemove', mousemove).node()
+
+            // .attr("transform", 
+            //     "translate(" + margin.left + "," + 30 + ")") //fix
+            // .append("canvas")
+            // .attr("transform", 
+            //     "translate(" + margin.left + "," + margin.top + ")");
+          
             //.on('mouseover', mousemove).node();
-          canvas.width = imageSize * scaleFactor;
-          canvas.height = imageSize * scaleFactor;
+          canvas.width = (imageSize * scaleFactor);
+          canvas.height = (imageSize * scaleFactor);
+
           var ctx = canvas.getContext('2d');
-          var hiddenCanvas = d3.select('body').append('canvas')
+          //ctx.moveTo(10,200);
+          //ctx.translate(100,70);
+
+          var hiddenCanvas = d3.select('#logo').append('canvas')
             .style('display', 'none')
             .node();
+
+          // d3.selectAll('hiddenCanvas')
+          //   .attr("transform", 
+          //         "translate(" + 100 + "," + 100 + ")")
+
           hiddenCanvas.width = imageSize * scaleFactor;
           hiddenCanvas.height = imageSize * scaleFactor;
           var hiddenCtx = hiddenCanvas.getContext('2d');
           //then set up where tweet text will be shown
-          var videoDiv = d3.select('body').append('div')
+          var videoDiv = d3.select('p#tooltip2').append('div')
             .attr("class", "tooltip2")
-            .style("left", 100 + "px")   
-            .style("top", 300 + "px"); 
+            .style("left", 50 + "px")   
+            .style("top", 180 + "px"); 
             // .style({
             //   'width': (window.innerWidth - canvas.width - 3 * padding) + 'px',
             //   'display': 'inline-block',
@@ -322,12 +654,19 @@ div.tooltip2 {
           data = data.slice(0, imageSize * imageSize);
           drawCanvas();
 
+          // var svg2 = d3.select("body").append('canvas')
+          //   .attr("width", width + margin.left + margin.right)
+          //   .attr("height", height + margin.top + margin.bottom)
+          //   .attr("transform", 
+          //       "translate(" + 10 + "," + 0 + ")")
+
           function drawCanvas() {
             //first clear canvas
             //ctx.destoy();
 
             ctx.fillStyle = "#fff";
             ctx.rect(0, 0, canvas.width, canvas.height);
+            //ctx.rect(500, 500, canvas.width, canvas.height);
             ctx.fill();
 
             _.each(data, function(pixel, i) {
@@ -359,8 +698,10 @@ div.tooltip2 {
 
                 // then the hidden canvas
                 hiddenCtx.fillStyle = video.uniqColor;
-                hiddenCtx.beginPath();
+            
                 hiddenCtx.fillRect(x - scaleFactor / 2, y - scaleFactor / 2,
+                  scaleFactor, scaleFactor);
+                hiddenCtx.fillRect(10, 10,
                   scaleFactor, scaleFactor);
               }
             });
@@ -405,6 +746,133 @@ div.tooltip2 {
     });
 
 
+
+
+
+// function getChannelId(buttonId){
+//   return buttonId;
+// }
+function myFunction(buttonId){
+  //removeEventListener('click', myFunction);
+  //console.log(buttonId)
+  //update(dict.get(buttonId));
+  createCanvas(buttonId);
+  update(dict.get(buttonId));
+  list = dict.get(buttonId);
+  var myElement = document.getElementById("Channel");
+  document.getElementById("Channel").innerHTML = "Channel: "+
+    '<a href="' + "http://" +list[0].channelURL+'">' + list[0].channelName +'</a>';
+  document.getElementById("Subscribers").innerHTML = "# Subscribers:" + Number(list[0].subscribers).toLocaleString('en');
+  document.getElementById("ChannelViews").innerHTML = "# Channel Views:" + Number(list[0].numViews).toLocaleString('en');
+ } 
+
+function update(data){
+  d3.selectAll("path.line").remove();
+  d3.selectAll("circle").remove();
+  d3.selectAll("line").remove();
+  d3.selectAll(".x-Axis").remove();
+  d3.selectAll(".y-Axis").remove();
+  d3.selectAll("dot").remove();
+
+  x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
+  y.domain([0, d3.max(data, function(d) {return d.views; })]);
+  var policyDate = new Date("2018-02-20");
+
+  svg.append("path")
+      //console.log("path");
+      .data([data])
+      .attr("class", "line")
+      .attr("id", function(d) { return d.id;})
+      .attr("d", valueline);
+      // .attr("d", function(d) { return valueline(d.views); })
+      // .style("stroke", function(d) { return z(d.id); });
+
+  svg.selectAll("dot")  
+    .data(data)     
+    .enter().append("circle")               
+      .attr("r", 3)   
+      .attr("cx", function(d) { return x(d.dateUploaded); })     
+      .attr("cy", function(d) { return y(d.views); }) 
+      .on("click", function(d){
+          //console.log(d.videoURl);
+            //d3.selectAll(".node").remove();
+            d3.select("svg.bubble").remove();
+            var myElement = document.getElementById("thumbnail");
+            document.getElementById("thumbnail").innerHTML =
+            '<a href="' + d.videoURl+'"><img src ="' + d.thumbnailURL +'" width = "200" height = "150" style = "border-radius:25px;margin-left: 20px;"></a>';
+            div.transition()    
+              .duration(200)    
+              .style("opacity", .9);    
+            div.html("Title: " + d.videoTitle + "<br/>" + "Date Uploaded: " + d.dateUploaded.toLocaleDateString() + "<br/>"  + "# Views: " + d.views)
+            console.log(d.videoId);
+            console.log(String(d.videoId));
+            bubbleChart(String(d.videoId));
+            //bubbleChart("wdSXvTCksFA");
+            
+        });  
+      //<a href="../html-link.htm"><img src="flower.jpg" width="82" height="86" title="White flower" alt="Flower"></a>
+    //   .on("mouseover", function(d) {    
+    //     div.transition()    
+    //       .duration(200)    
+    //       .style("opacity", .9);    
+    //     div.html(d.videoTitle + "<br/>" + d.dateUploaded.toLocaleDateString() + "<br/>"  + d.views) 
+    //       // .style("left", (d3.event.pageX) + "px")   
+    //       // .style("top", (d3.event.pageY - 28) + "px");  
+    //  })          
+    // .on("mouseout", function(d) {   
+    //   div.transition()    
+    //       .duration(500)    
+    //       .style("opacity", 0); 
+    // });
+
+  // add the x-axis
+  svg.append("g")
+    .attr("class","x-Axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis
+      .tickFormat(d3.timeFormat("%Y-%m-%d")))
+    .selectAll("text") 
+    .style("text-anchor", "end")
+    .attr("dx", ".8em")
+    .style("font-size", "15px") 
+    .attr("dy", ".75em")
+    .attr("transform",  "rotate(-35)");
+     
+  // add the y-axis
+  svg.append("g")
+    .attr("class","y-Axis")
+    .call(yAxis);
+
+      svg.append("line")
+    .attr("class", "zero")
+    .attr("stroke","red")
+    .attr("stroke-width", 3)
+    .attr("x1", x(policyDate))
+    .attr("y1", height)
+    .attr("x2", x(policyDate))
+    .attr("y2", 0);
+
+
+ }
+    // taken directly from nbremer's occupationcanvas code
+    //Generates the next color in the sequence, going from 0,0,0 to 255,255,255.
+    //From: https://bocoup.com/weblog/2d-picking-in-canvas
+var nextCol = 1;
+function genColor(){
+  var ret = [];
+  // via http://stackoverflow.com/a/15804183
+  if(nextCol < 16777215){
+    ret.push(nextCol & 0xff); // R
+    ret.push((nextCol & 0xff00) >> 8); // G 
+    ret.push((nextCol & 0xff0000) >> 16); // B
+
+    nextCol += 100; // This is exagerated for this example and would ordinarily be 1.
+  }
+  var col = "rgb(" + ret.join(',') + ")";
+  return col;
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 function createCanvas(buttonId){
   //d3.select('svg').selectAll('*').remove();
@@ -421,7 +889,6 @@ function createCanvas(buttonId){
 
   d3.json('youtubeIMG2.json', function(image) {
         d3.json('vids.json', function(videos) {
-
           //some defaults for the image
           var imageSize = Math.sqrt(image.length);
           var scaleFactor = Math.floor(500 / imageSize);
@@ -430,24 +897,32 @@ function createCanvas(buttonId){
           var padding = 20;
 
           //set up canvas and hidden canvas
-          var canvas = d3.select('body').append('canvas')
+          var canvas = d3.select('#logo')
+            // .attr("transform", 
+            //     "translate(" + margin.left + "," + 700 + ")") //fix
+            .append('canvas')
             .on('mousemove', mousemove).node();
-
-            //.on('mouseover', mousemove).node();
+          // d3.selectAll('canvas')
+          //   .attr("transform", 
+          //         "translate(" + 10 + "," + 10 + ")")            //.on('mouseover', mousemove).node();
           canvas.width = imageSize * scaleFactor;
           canvas.height = imageSize * scaleFactor;
           var ctx = canvas.getContext('2d');
-          var hiddenCanvas = d3.select('body').append('canvas')
+          var hiddenCanvas = d3.select('body')
+            .append('canvas')
             .style('display', 'none')
             .node();
+          
+
           hiddenCanvas.width = imageSize * scaleFactor;
           hiddenCanvas.height = imageSize * scaleFactor;
           var hiddenCtx = hiddenCanvas.getContext('2d');
+
           //then set up where tweet text will be shown
-          var videoDiv = d3.select('body').append('div')
+          var videoDiv = d3.select('p#tooltip2').append('div')
             .attr("class", "tooltip2")
-            .style("left", 100 + "px")   
-            .style("top", 300 + "px")
+            .style("left", 50 + "px")   
+            .style("top", 180 + "px")
             .attr("opacity",0);
             // .style({
             //   'width': (window.innerWidth - canvas.width - 3 * padding) + 'px',
@@ -509,7 +984,6 @@ function createCanvas(buttonId){
 
               video.radius = radiusScale(video.views+1);
 
-
               policyDate = new Date("2018-02-20");
               if (video.date < policyDate) { //2018-02-20
                 video.type = 'before';
@@ -530,7 +1004,6 @@ function createCanvas(buttonId){
               video.index = i;
               return -video.date;
             }).value();
-
           // turn it grayscale first
           _.each(image, function(pixel) {
             data.push(Math.max(pixel[0], pixel[1], pixel[2]));
@@ -577,6 +1050,10 @@ function createCanvas(buttonId){
                 if(video.channelId == buttonId){
                   ctx.fillStyle = 'rgba(255,0,0' +
                   ',' + video.opacity + ')';
+                  // console.log(video.channelName);
+                  // name = video.channelName;
+                  // subscribers = video.subscribers;
+                  // channelView = video.numViews;
                 }
                 else{
                   ctx.fillStyle = 'rgba(' + videoColors[video.type].join(',') +
@@ -641,214 +1118,6 @@ function createCanvas(buttonId){
           }
         });
     });
-}
-
- /////////////////////////////////////////////////////////////////////////////////////////////// 
-
-var parseTime = d3.timeParse("%Y-%m-%d");
-// set the dimensions and margins of the graph
-var margin = {top: 50, right: 50, bottom: 100, left: 100},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var parseTime = d3.timeParse("%Y-%m-%d");
-var z = d3.scaleOrdinal(d3.schemeCategory10);
-// set X and Y axis
-var x = d3.scaleTime()
-          .range([0, width]);
-          //.padding(0.1);
-var y = d3.scaleLinear()
-          .range([height, 0]);
-     
-var valueline = d3.line()
-  .x(function(d) {return x(d.dateUploaded);})
-  .y(function(d) {return y(d.views);});
-
-var xAxis = d3.axisBottom(x)
-              .ticks(7,",f");
-var yAxis = d3.axisLeft(y)
-              .ticks(7,",f");
-
-// Define the div for the tooltip
-var div = d3.select("body").append("div") 
-    .attr("class", "tooltip")     
-    .style("opacity", 0);
-
-
-//create svg
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
-
-//set up data
-var dict = new Map();
-var map1 = new Map();
-var policyDate = new Date("2018-02-20");
-
-d3.csv("allVideoData.csv", function(error, data) {
-  if (error) throw error;
-
-  //formating data
-  data.forEach(function(d) {
-    d.dateUploaded = parseTime(d.dateUploaded.substring(0, 10));
-    d.channelId = d.channelId;
-    d.views = +d.views;
-    
-    if (dict.has(d.channelId)){
-      var results = dict.get(d.channelId);
-      results.push(d);
-      dict.set(d.channelId,results);
-    }else{
-      dict.set(d.channelId,[d]);
-    }
-
-  });
-
-  // add the x-axis
-  svg.append("g")
-    .attr("class","x-Axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis
-      .tickFormat(d3.timeFormat("%Y-%m-%d")))
-    .selectAll("text") 
-    .style("text-anchor", "end")
-    .attr("dx", ".8em")
-    .style("font-size", "15px") 
-    .attr("dy", ".75em")
-    .attr("transform",  "rotate(-35)");
-     
-  // add the y-axis
-  svg.append("g")
-    .attr("class","y-Axis")
-    .call(yAxis);
-
-  svg.append("line")
-    .attr("class", "zero")
-    .attr("stroke","red")
-    .attr("stroke-width", 3)
-    .attr("x1", x(policyDate))
-    .attr("y1", height)
-    .attr("x2", x(policyDate))
-    .attr("y2", 0);
-
-    // add x-axis label
-  svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("x", width/2)
-      .attr("y", height + 50)
-      .text("Date");
-
-  //add y-axis label
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x",0 - (height / 2))
-    .attr("y", 0 - margin.left + 20)
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text("Views");
-
-  update(dict.get("JakePaulProductions"));
-
- });
-
-// function getChannelId(buttonId){
-//   return buttonId;
-// }
-function myFunction(buttonId){
-  //removeEventListener('click', myFunction);
-  //console.log(buttonId)
-  update(dict.get(buttonId));
-  createCanvas(buttonId);
- } 
-
-function update(data){
-  d3.selectAll("path.line").remove();
-  d3.selectAll("circle").remove();
-  d3.selectAll("line").remove();
-  d3.selectAll(".x-Axis").remove();
-  d3.selectAll(".y-Axis").remove();
-
-  x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
-  y.domain([0, d3.max(data, function(d) {return d.views; })]);
-  var policyDate = new Date("2018-02-20");
-
-  svg.append("path")
-      //console.log("path");
-      .data([data])
-      .attr("class", "line")
-      .attr("id", function(d) { return d.id;})
-      .attr("d", valueline);
-      // .attr("d", function(d) { return valueline(d.views); })
-      // .style("stroke", function(d) { return z(d.id); });
-
-  svg.selectAll("dot")  
-    .data(data)     
-    .enter().append("circle")               
-      .attr("r", 3)   
-      .attr("cx", function(d) { return x(d.dateUploaded); })     
-      .attr("cy", function(d) { return y(d.views); })   
-      .on("mouseover", function(d) {    
-        div.transition()    
-          .duration(200)    
-          .style("opacity", .9);    
-        div.html(d.videoTitle + "<br/>" + d.dateUploaded.toLocaleDateString() + "<br/>"  + d.views)  
-          .style("left", (d3.event.pageX) + "px")   
-          .style("top", (d3.event.pageY - 28) + "px");  
-     })          
-    .on("mouseout", function(d) {   
-      div.transition()    
-          .duration(500)    
-          .style("opacity", 0); 
-    });
-
-  // add the x-axis
-  svg.append("g")
-    .attr("class","x-Axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis
-      .tickFormat(d3.timeFormat("%Y-%m-%d")))
-    .selectAll("text") 
-    .style("text-anchor", "end")
-    .attr("dx", ".8em")
-    .style("font-size", "15px") 
-    .attr("dy", ".75em")
-    .attr("transform",  "rotate(-35)");
-     
-  // add the y-axis
-  svg.append("g")
-    .attr("class","y-Axis")
-    .call(yAxis);
-
-      svg.append("line")
-    .attr("class", "zero")
-    .attr("stroke","red")
-    .attr("stroke-width", 3)
-    .attr("x1", x(policyDate))
-    .attr("y1", height)
-    .attr("x2", x(policyDate))
-    .attr("y2", 0);
-
-
- }
-    // taken directly from nbremer's occupationcanvas code
-    //Generates the next color in the sequence, going from 0,0,0 to 255,255,255.
-    //From: https://bocoup.com/weblog/2d-picking-in-canvas
-var nextCol = 1;
-function genColor(){
-  var ret = [];
-  // via http://stackoverflow.com/a/15804183
-  if(nextCol < 16777215){
-    ret.push(nextCol & 0xff); // R
-    ret.push((nextCol & 0xff00) >> 8); // G 
-    ret.push((nextCol & 0xff0000) >> 16); // B
-
-    nextCol += 100; // This is exagerated for this example and would ordinarily be 1.
-  }
-  var col = "rgb(" + ret.join(',') + ")";
-  return col;
 }
 
  //   });
