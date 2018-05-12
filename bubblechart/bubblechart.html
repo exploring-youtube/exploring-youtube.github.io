@@ -71,7 +71,7 @@ d3.csv("data/word_frequency2.csv", rowConverter, function(data){
             .attr("dy", ".2em")
             .style("text-anchor", "middle")
             .text(function(d) {
-                return d.data.word.substring(0, d.r / 3);
+                return d.data.word.substring(0, d.r / 2);
                 //return d.word;
             })
             .attr("font-family", "sans-serif")
@@ -89,7 +89,7 @@ d3.csv("data/word_frequency2.csv", rowConverter, function(data){
             })
             .attr("font-family",  "Gill Sans", "Gill Sans MT")
             .attr("font-size", function(d){
-                return d.r/5;
+                return d.r/2;
             })
             .attr("fill", "white");
 
