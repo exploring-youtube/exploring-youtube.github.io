@@ -30,23 +30,28 @@ img.resize {
 }
 
 .button {
-    height: 15px; 
-    width: 15px;
+    height: 20px; 
+    width: 20px;
     background-repeat:no-repeat;
     border: none;
     border-radius: 50%;
-    padding: 20px 20px;
+    padding: 30px 30px;
     text-align: left;
     display: inline-block;
     cursor:pointer;
     overflow: hidden;
     outline:none;
-    background-size: 40px 40px;
+    background-size: 60px 60px;
 }
 
 /*.row{
 	text-align: center;
 }*/
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 20px;
+}
 
 .header {
   font-size: "30";
@@ -54,7 +59,7 @@ img.resize {
 
 .line {fill: none;
   stroke: red;
-  stroke-width: 1px;}
+  stroke-width: 2px;}
 
 .line zero {fill: none;
   stroke: grey;
@@ -168,6 +173,18 @@ div.tooltip2 {
             <!-- AceFamily--> 
             <div id="UCWwWOFsW68TqXE-HZLC3WIA" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1l3vCD8RZeuAKDNU1-vcYiyywTR1G02ghwKQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
             </div>
+            <!-- RomanAtwoodVlogs--> 
+            <div id="RomanAtwoodVlogs" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp1ORrFrZzNW1gYdlIxi2er7-xipSr0ol5Xj4Q=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- Shaytards--> 
+            <div id="SHAYTARDS" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp02ZLUQ2XQl3psSZZ7rnzyG4O08uHB5L04_IQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div> 
+            <!-- KYRSP33DY--> 
+            <div id="KYRSP33DY" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp0hyrPYjmv84g8jRNlyuKxKS3ctr0xjVJFjmQ=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
+            <!-- VanossGaming--> 
+            <div id="VanossGaming" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3V68_5qWNIAZPszgH4jsOgxEf2JWUb6rAOUw=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
+            </div>
             <!--Hutch--> 
             <div id="shaun0728" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp2WMqr78xrJZBqudel1PIvRzCu5RxGz7qC4eg=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
             </div>
@@ -185,7 +202,7 @@ div.tooltip2 {
             </div>
             <!-- BethanyMota--> 
             <div id="Macbarbie07" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3R3V237-dgkh3wurEQKAX_uWnZhtD2XSfIBA=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
-            </div>
+            </div>  
             <!-- BuzzFeed--> 
             <div id="BuzzFeedVideo" class='button' style = "background-image: url('https://lh3.googleusercontent.com/a-/AJLlDp3JmZsMr1fLjNl3peeE8TobwvNjP-vao8jq6w=s176-c-k-c0x00ffffff-no-rj-mo');" onclick="myFunction(this.id)">
             </div>
@@ -208,7 +225,7 @@ div.tooltip2 {
   </div>  
 </div>
 <div class = 'row'>
-  <div class = 'col-sm-5' id = 'lineGraph'>
+  <div class = 'col-sm-8' id = 'lineGraph'>
     <h2> Channel's Videos' Stats Over Time: </h2> 
   </div>
   <div class = 'col-sm-3' id = 'vid'>
@@ -216,10 +233,12 @@ div.tooltip2 {
     <p id ="thumbnail"></p>
     <p id ="tooltip"></p>
   </div>
-  <div class = 'col-sm-3' id = 'bubbleCmmt'>
-    <h2> Comments: </h2> 
+</div>
+<div class = 'row'>
+  <div class = 'center' id = 'bubbleCmmt'>
+    <h2 class="center"> Comments: </h2> 
   </div>
-</div> 
+</div>  
 </body>
 
 
@@ -227,7 +246,7 @@ div.tooltip2 {
 <script>
 
 function bubbleChart(vidId){
-  var diameter = 400, //max size of the bubbles
+  var diameter = 600, //max size of the bubbles
       color = d3.scaleOrdinal(d3.schemeCategory20c); //color category
   var bubble = d3.pack()
       .size([diameter, diameter])
@@ -237,7 +256,6 @@ function bubbleChart(vidId){
       .attr("width", diameter)
       .attr("height", diameter)
       .attr("class", "bubble");
-
   var rowConverter = function(d) {
         if(d.videoID == vidId){
           return {
@@ -247,10 +265,9 @@ function bubbleChart(vidId){
           }
         }
   }          
-
   d3.csv("data/word_frequency6.csv", rowConverter, function(data){
     //formating data 
-  //d3.csv("word_frequency2.csv", rowConverter, function(data){   
+  //d3.csv("word_frequency.csv", rowConverter, function(data){   
       //bubbles needs very specific format, convert data to this.
       console.log(data);
       var nodes = d3.hierarchy({children: data})
@@ -310,7 +327,6 @@ function bubbleChart(vidId){
           console.log("done");
           // d3.select(self.frameElement)
           //     .style("height", 100 + "px");    
-
   }); 
 }
  /////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -319,8 +335,8 @@ var parseTime = d3.timeParse("%Y-%m-%d");
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 50, bottom: 100, left: 100},
     //width = 960 - margin.left - margin.right,
-    width = 520 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 850 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
 var parseTime = d3.timeParse("%Y-%m-%d");
 var z = d3.scaleOrdinal(d3.schemeCategory10);
@@ -331,7 +347,7 @@ var x = d3.scaleTime()
 var y = d3.scaleLinear()
           .range([height, 0]);
      
-var valueline = d3.line()
+var valueline = d3.line()//.curve(d3.curveCardinal)
   .x(function(d) {return x(d.dateUploaded);})
   .y(function(d) {return y(d.views);});
 
@@ -419,43 +435,6 @@ d3.csv("allVideoData2.csv", function(error, data) {
     .attr("y1", height)
     .attr("x2", x(policyDate))
     .attr("y2", 0);
-
-  // svg.selectAll("dot")  
-  //   .data(data)     
-  //   .enter().append("circle")               
-  //     .attr("r", 3)   
-  //     .attr("cx", function(d) { return x(d.dateUploaded); })     
-  //     .attr("cy", function(d) { return y(d.views); }) 
-    //   .on("mouseover", function(d) {   
-    //     div.transition()    
-    //       .duration(200)    
-    //       .style("opacity", .9);    
-    //     div.html(d.videoTitle + "<br/>" + d.dateUploaded.toLocaleDateString() + "<br/>"  + d.views) 
-    //     //console.log(d.thumbnailURL);  
-    //     console.log(d.videoId);
-    //     console.log(String(d.videoId));
-    //     bubbleChart(String(d.videoId));
-    //       // .style("left", (d3.event.pageX) + "px")   
-    //       // .style("top", (d3.event.pageY - 28) + "px");  
-    //  })          
-    // .on("mouseout", function(d) {   
-    //   div.transition()    
-    //       .duration(500)    
-    //       .style("opacity", 0); 
-    // })
-    // .on("click", function(){
-    //       console.log('hi');
-    //         var myElement = document.getElementById("thumbnail");
-    //         document.getElementById("thumbnail").innerHTML =
-    //         '<a href="' + d.videoURl+'"><img src ="' + d.thumbnailURL +'" width = "200" height = "150" style = "border-radius:25px;margin-left: 20px;"></a>';
-    //         div.transition()    
-    //           .duration(200)    
-    //           .style("opacity", .9);    
-    //         div.html("Title: " + d.videoTitle + "<br/>" + "Date Uploaded: " + d.dateUploaded.toLocaleDateString() + "<br/>"  + "# Views: " + d.views)
-    //         console.log(d.videoId);
-    //         console.log(String(d.videoId));
-    //         bubbleChart(String(d.videoId));
-    //     });
       
 
     // add x-axis label
@@ -472,7 +451,7 @@ d3.csv("allVideoData2.csv", function(error, data) {
     .attr("y", 0 - margin.left + 20)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Views");
+    .text("# Views");
 
 
   update(dict.get("JakePaulProductions"));
@@ -487,8 +466,8 @@ d3.csv("allVideoData2.csv", function(error, data) {
   // // Remove old elements:
   // items.exit().remove();
 
-  d3.json('youtubeIMG2.json', function(image) {
-        d3.json('vids.json', function(videos) {
+  d3.json('youtubeIMG3.json', function(image) {
+        d3.json('vids2.json', function(videos) {
         //d3.json('vids2.json', function(videos) {
           //some defaults for the image
           var imageSize = Math.sqrt(image.length);
@@ -775,7 +754,7 @@ function update(data){
       //console.log("path");
       .data([data])
       .attr("class", "line")
-	  .style("stoke", "red")
+      .style("stroke", "red")
       .attr("id", function(d) { return d.id;})
       .attr("d", valueline);
       // .attr("d", function(d) { return valueline(d.views); })
@@ -783,7 +762,8 @@ function update(data){
 
   svg.selectAll("dot")  
     .data(data)     
-    .enter().append("circle")               
+    .enter().append("circle")
+      .attr("fill","red")               
       .attr("r", 3)   
       .attr("cx", function(d) { return x(d.dateUploaded); })     
       .attr("cy", function(d) { return y(d.views); }) 
@@ -809,10 +789,15 @@ function update(data){
             
         })  
       .on("mouseover", function(d) {    
-        d3.select(this).style("fill", "red");  
+        d3.select(this)
+        .style("stroke-width", 3)
+        .style("stroke", "#FFD700")
+        //d3.select(this).style("fill", "#FFD700");  
      })      
     .on("mouseout", function(d) {   
-      d3.select(this).style("fill", "black");  
+      d3.select(this)
+      .style("stroke", "none")
+      .style("fill", "red");  
     });
 
   // add the x-axis
@@ -820,7 +805,7 @@ function update(data){
     .attr("class","x-Axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis
-      .tickFormat(d3.timeFormat("%Y-%m-%d")))
+      .tickFormat(d3.timeFormat("%d %b %y")))
     .selectAll("text") 
     .style("text-anchor", "end")
     .attr("dx", ".8em")
@@ -841,6 +826,15 @@ function update(data){
     .attr("y1", height)
     .attr("x2", x(policyDate))
     .attr("y2", 0);
+
+    svg.append("text")
+    .attr("y", -3)//magic number here
+    //.attr("x", function(){ return x(lineEnd)})
+    .attr("x", x(policyDate))
+    .attr('text-anchor', 'middle')
+    .attr("class", "myLabel")//easy to style with CSS
+    .text("New Policy Implemented: 20 Feb 18");
+
 
 
  }
@@ -877,8 +871,8 @@ function createCanvas(buttonId){
   // canvas.remove();
   // hiddenCanvas.remove();
 
-  d3.json('youtubeIMG2.json', function(image) {
-        d3.json('vids.json', function(videos) {
+  d3.json('youtubeIMG3.json', function(image) {
+        d3.json('vids2.json', function(videos) {
           //some defaults for the image
           var imageSize = Math.sqrt(image.length);
           var scaleFactor = Math.floor(500 / imageSize);
