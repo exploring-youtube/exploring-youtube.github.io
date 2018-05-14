@@ -700,7 +700,7 @@ d3.csv("allVideoData2.csv", function(error, data) {
               var viewsStr = String(video.views) 
               var videoString = '<strong>Video #' + video.index + '</strong>: ';
               videoString +=  video.dateUploaded.substring(0, 10) + '</br>';
-              videoString += '<p>' + 'Channel: ' + video.channelName.substring(0,video.channelName.length) + '</p>';
+              videoString += '<p>' + 'Channel: ' + String(video.channelName).substring(0,video.channelName.length) + '</p>';
               videoString += '<p>' + 'Title: '+ video.videoTitle + '</p>';
               videoString += '<p>' + '# Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>'; 
               //Number(d.views).toLocaleString('en')
@@ -1035,10 +1035,6 @@ function createCanvas(buttonId){
                 if(video.channelId == buttonId){
                   ctx.fillStyle = 'rgba(255,0,0' +
                   ',' + video.opacity + ')';
-                  // console.log(video.channelName);
-                  // name = video.channelName;
-                  // subscribers = video.subscribers;
-                  // channelView = video.numViews;
                 }
                 else{
                   ctx.fillStyle = 'rgba(' + videoColors[video.type].join(',') +
@@ -1051,7 +1047,6 @@ function createCanvas(buttonId){
                 ctx.fill();
                 if (video.hovered) {
                   // if it's hovered, give it a stroke
-			console.log("Title: " + video.videoTitle);
                   ctx.strokeStyle = 'rgb(255,216,75)';
                   ctx.lineWidth = 3;
                   ctx.stroke();
@@ -1089,7 +1084,7 @@ function createCanvas(buttonId){
               var viewsStr = String(video.views) 
               var videoString = '<strong>Video #' + video.index + '</strong>: ';
               videoString +=  video.dateUploaded.substring(0, 10) + '</br>';
-              videoString += '<p>' + 'Channel: ' + video.channelName.substring(0,video.channelName.length) + '</p>';
+              videoString += '<p>' + 'Channel: ' + String(video.channelName).substring(0,video.channelName.length) + '</p>';
               videoString += '<p>' + 'Title: '+ video.videoTitle + '</p>';
               videoString += '<p>' + '# Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>'; 
               //Number(d.views).toLocaleString('en')
