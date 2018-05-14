@@ -1051,6 +1051,7 @@ function createCanvas(buttonId){
                 ctx.fill();
                 if (video.hovered) {
                   // if it's hovered, give it a stroke
+			console.log("Title: " + video.videoTitle);
                   ctx.strokeStyle = 'rgb(255,216,75)';
                   ctx.lineWidth = 3;
                   ctx.stroke();
