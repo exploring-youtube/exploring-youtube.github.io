@@ -337,7 +337,7 @@ var parseTime = d3.timeParse("%Y-%m-%d");
 var margin = {top: 50, right: 50, bottom: 100, left: 100},
     //width = 960 - margin.left - margin.right,
     width = 800 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+    height = 440 - margin.top - margin.bottom;
 
 var parseTime = d3.timeParse("%Y-%m-%d");
 var z = d3.scaleOrdinal(d3.schemeCategory10);
@@ -746,6 +746,7 @@ function update(data){
   d3.selectAll(".y-Axis").remove();
   d3.selectAll("dot").remove();
   d3.selectAll("text.myLabel").remove();
+  d3.selectAll("text.myLabel2").remove();
   //d3.selectAll("div.tooltip").remove();
 
   x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
@@ -830,13 +831,23 @@ function update(data){
     .attr("y2", 0);
 
     svg.append("text")
+    .attr("y", -18)//magic number here
+    //.attr("x", function(){ return x(lineEnd)})
+    .attr("x", x(policyDate))
+    .attr('text-anchor', 'middle')
+    .attr("class", "myLabel")//easy to style with CSS
+    .text("New Policy:")
+    //.text("20 Feb 18")
+
+    svg.append("text")
     .attr("y", -3)//magic number here
     //.attr("x", function(){ return x(lineEnd)})
     .attr("x", x(policyDate))
     .attr('text-anchor', 'middle')
     .attr("class", "myLabel")//easy to style with CSS
-    .text("New Policy: 20 Feb 18");
+    .text("20 Feb 18")
 
+//20 Feb 18
 
 
  }
