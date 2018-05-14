@@ -265,9 +265,9 @@ function bubbleChart(vidId){
           }
         }
   }          
-  d3.csv("data/word_frequency6.csv", rowConverter, function(data){
+  //d3.csv("data/word_frequency6.csv", rowConverter, function(data){
     //formating data 
-  //d3.csv("word_frequency.csv", rowConverter, function(data){   
+  d3.csv("word_frequency.csv", rowConverter, function(data){   
       //bubbles needs very specific format, convert data to this.
       console.log(data);
       var nodes = d3.hierarchy({children: data})
@@ -744,6 +744,7 @@ function update(data){
   d3.selectAll(".x-Axis").remove();
   d3.selectAll(".y-Axis").remove();
   d3.selectAll("dot").remove();
+  d3.selectAll("text.myLabel").remove();
   //d3.selectAll("div.tooltip").remove();
 
   x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
@@ -833,7 +834,7 @@ function update(data){
     .attr("x", x(policyDate))
     .attr('text-anchor', 'middle')
     .attr("class", "myLabel")//easy to style with CSS
-    .text("New Policy Implemented: 20 Feb 18");
+    .text("New Policy: 20 Feb 18");
 
 
 
