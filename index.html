@@ -265,9 +265,9 @@ function bubbleChart(vidId){
           }
         }
   }          
-  //d3.csv("data/word_frequency6.csv", rowConverter, function(data){
+  d3.csv("data/word_frequency6.csv", rowConverter, function(data){
     //formating data 
-  d3.csv("word_frequency.csv", rowConverter, function(data){   
+  //d3.csv("word_frequency.csv", rowConverter, function(data){   
       //bubbles needs very specific format, convert data to this.
       console.log(data);
       var nodes = d3.hierarchy({children: data})
