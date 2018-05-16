@@ -44,9 +44,6 @@ img.resize {
     background-size: 60px 60px;
 }
 
-/*.row{
-	text-align: center;
-}*/
 .center {
     margin: auto;
     width: 50%;
@@ -121,10 +118,6 @@ div.tooltip2 {
     <h2> All Channel Videos: </h2> 
   </div>
   <div class = 'col-sm-4' id = 'logoDetails'>
-<!--     <h2> YouTuber: </h2>
-    <p id ="Channel"> Channel: </p>
-    <p id ="Subscribers"> # Subscribers: </p>
-    <p id ="ChannelViews"> # Channel Views: </p> -->
     <ul class="legend" style="margin:65px">
       <li><span class="before"></span>Before YouTube Policy Change</li>
       <li><span class="after"></span>After YouTube Policy Change</li>
@@ -139,10 +132,6 @@ div.tooltip2 {
       <p id ="Subscribers"> # Subscribers: </p>
       <p id ="ChannelViews"> # Channel Views: </p>
     </div>
-<!--   <div class="w3-container">
-    <h2 style = "padding-left: 20px"> watch time vs. age group</h2>
-  </div> --><!-- 
-    <h2 style = 'margin-left:500px;'> YouTuber: </h2> -->
   	<divs>
   	<h2> Channels: </h2>
             <!-- JakePaul--> 
@@ -214,9 +203,6 @@ div.tooltip2 {
             <!-- the dodo site--> 
             <div id="TheDodoSite" class='button' style = "background-image: url('https://yt3.ggpht.com/-nnauTHsMAYM/AAAAAAAAAAI/AAAAAAAAAAA/6cjZ1jU7y7A/s288-mo-c-c0xffffffff-rj-k-no/photo.jpg');" onclick="myFunction(this.id)">
             </div>
-
-  <!-- 			<svg class='chart'>
-  			</svg> -->
     </divs>
   </div>  
 </div>
@@ -231,12 +217,7 @@ div.tooltip2 {
     <h2> Comments: </h2>
     <p id = 'bubbleCmmt'></p>
   </div>
-</div>
-<!-- <div class = 'row'>
-  <div class = 'center' id = 'bubbleCmmt'>
-    <h2 class="center"> Comments: </h2> 
-  </div>
-</div> -->  
+</div> 
 </body>
 
 
@@ -264,15 +245,12 @@ function bubbleChart(vidId){
         }
   }          
   d3.csv("data/word_frequency6.csv", rowConverter, function(data){
-    //formating data 
-  //d3.csv("word_frequency2.csv", rowConverter, function(data){   
+    //formating data   
       //bubbles needs very specific format, convert data to this.
       console.log(data);
       var nodes = d3.hierarchy({children: data})
               .sum(function(d) { return d.frequency; });
-              //.sort(function(a, b) { return b.frequency - a.frequency;
       //setup the chart
-    //var node = svg.selectAll(".node")
     var node = svg2.selectAll(".node")
               .data(bubble(nodes).descendants())
               .enter()
@@ -312,7 +290,6 @@ function bubbleChart(vidId){
               .attr("dy", "1.3em")
               .style("text-anchor", "middle")
               .text(function(d) {
-                  //return d.data.frequency;
                   return d.data.frequency;
               })
               .attr("font-family",  "Gill Sans", "Gill Sans MT")
@@ -322,9 +299,7 @@ function bubbleChart(vidId){
               .attr("fill", "white");
           d3.select(self.frameElement)
               .style("height", diameter + "px");
-          console.log("done");
-          // d3.select(self.frameElement)
-          //     .style("height", 100 + "px");    
+          console.log("done");    
   }); 
 }
  /////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -345,7 +320,7 @@ var x = d3.scaleTime()
 var y = d3.scaleLinear()
           .range([height, 0]);
      
-var valueline = d3.line()//.curve(d3.curveCardinal)
+var valueline = d3.line()
   .x(function(d) {return x(d.dateUploaded);})
   .y(function(d) {return y(d.views);});
 
@@ -366,8 +341,6 @@ var div = d3.select("p#tooltip").append("div")
 var svg = d3.select("#lineGraph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    //.attr("transform", 
-       // "translate(" + margin.left + "," + 1000 + ")") //fix
     .append("g")
     .attr("transform", 
         "translate(" + margin.left + "," + margin.top + ")");
@@ -457,12 +430,6 @@ d3.csv("allVideoData2.csv", function(error, data) {
  });
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-  //d3.select('svg').selectAll('*').remove();
-  // Set new data on your chart:
-  // var items = d3.select('svg').selectAll('.item').data(newData);
-
-  // // Remove old elements:
-  // items.exit().remove();
 
   d3.json('youtubeIMG3.json', function(image) {
         d3.json('vids2.json', function(videos) {
@@ -476,32 +443,17 @@ d3.csv("allVideoData2.csv", function(error, data) {
 
           //set up canvas and hidden canvas
           var canvas = d3.select('#logo')
-            // .attr("transform", 
-            //     "translate(" + margin.left + "," + 700 + ")") //fix
             .append('canvas')
             .on('mousemove', mousemove).node()
-
-            // .attr("transform", 
-            //     "translate(" + margin.left + "," + 30 + ")") //fix
-            // .append("canvas")
-            // .attr("transform", 
-            //     "translate(" + margin.left + "," + margin.top + ")");
-          
-            //.on('mouseover', mousemove).node();
+	  
           canvas.width = (imageSize * scaleFactor);
           canvas.height = (imageSize * scaleFactor);
 
           var ctx = canvas.getContext('2d');
-          //ctx.moveTo(10,200);
-          //ctx.translate(100,70);
 
           var hiddenCanvas = d3.select('#logo').append('canvas')
             .style('display', 'none')
             .node();
-
-          // d3.selectAll('hiddenCanvas')
-          //   .attr("transform", 
-          //         "translate(" + 100 + "," + 100 + ")")
 
           hiddenCanvas.width = imageSize * scaleFactor;
           hiddenCanvas.height = imageSize * scaleFactor;
@@ -511,25 +463,15 @@ d3.csv("allVideoData2.csv", function(error, data) {
             .attr("class", "tooltip2")
             .style("left", 50 + "px")   
             .style("top", 180 + "px");
-            // .style({
-            //   'width': (window.innerWidth - canvas.width - 3 * padding) + 'px',
-            //   'display': 'inline-block',
-            //   'vertical-align': 'top',
-            //   'padding': padding + 'px'
-            // });
           
           // first process the tweets
           var minOpacity = _.min(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.likes;
           });
-          //minOpacity = minOpacity.stats.favorites + 1;
           minOpacity = minOpacity.likes + 1;
           var maxOpacity = _.max(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.likes;
           });
-          //maxOpacity = maxOpacity.stats.favorites + 1;
           maxOpacity = maxOpacity.likes + 1;
 
           var opacityScale = d3.scaleLog()
@@ -539,16 +481,13 @@ d3.csv("allVideoData2.csv", function(error, data) {
 
           // first process the tweets
           var minRadius = _.min(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.views;
           });
-          //minOpacity = minOpacity.stats.favorites + 1;
+		
           minRadius = minRadius.views + 1;
           var maxRadius = _.max(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.views;
           });
-          //maxOpacity = maxOpacity.stats.favorites + 1;
           maxRadius = maxRadius.views + 1;
 
           var radiusScale = d3.scaleLog()
@@ -556,9 +495,6 @@ d3.csv("allVideoData2.csv", function(error, data) {
             .range([.25, 1]);
 
           var videoColors = {
-            // 'reply': [248,148,6], // orange
-            // 'retweet': [81,163,81], // green
-            // 'tweet': [0,136,204] // blue
             'before': [192,192,192], // silver
             'after': [144,144,144], // dark grey
           };
@@ -573,19 +509,12 @@ d3.csv("allVideoData2.csv", function(error, data) {
 
 
               policyDate = new Date("2018-02-20");
-              if (video.date < policyDate) { //2018-02-20
+              if (video.date < policyDate) { 
                 video.type = 'before';
               } else  {
                 video.type = 'after';
               } 
-              //video.uniqColor = genColor();
-              // and then remember the tweet by its unique color
-              //video.uniqColor = genColor();
-              //if(video.channelId == "JakePaulProductions"){
-                  //video.uniqColor = 'rgb(255,0,0)'
-              //}else{
-                  video.uniqColor = genColor();
-               // }
+              video.uniqColor = genColor();
               colToVideo[video.uniqColor] = video;
               return video.date;
             }).sortBy(function(video, i) {
@@ -622,19 +551,9 @@ d3.csv("allVideoData2.csv", function(error, data) {
           data = data.slice(0, imageSize * imageSize);
           drawCanvas();
 
-          // var svg2 = d3.select("body").append('canvas')
-          //   .attr("width", width + margin.left + margin.right)
-          //   .attr("height", height + margin.top + margin.bottom)
-          //   .attr("transform", 
-          //       "translate(" + 10 + "," + 0 + ")")
-
           function drawCanvas() {
-            //first clear canvas
-            //ctx.destoy();
-
             ctx.fillStyle = "#fff";
             ctx.rect(0, 0, canvas.width, canvas.height);
-            //ctx.rect(500, 500, canvas.width, canvas.height);
             ctx.fill();
 
             _.each(data, function(pixel, i) {
@@ -653,7 +572,6 @@ d3.csv("allVideoData2.csv", function(error, data) {
                     ',' + video.opacity + ')';
                 }
                 ctx.beginPath();
-                //ctx.arc(x, y, scaleFactor * tweet.opacity, 0, 2 * Math.PI, true);
                 ctx.arc(x, y, scaleFactor * video.radius, 0, 2 * Math.PI, true);
                 
                 ctx.fill();
@@ -708,23 +626,12 @@ d3.csv("allVideoData2.csv", function(error, data) {
               videoDiv.transition()    
                 .duration(500)    
                 .style("opacity", 1);
-              //console.log(videoString)
             }
           }
         });
     });
 
-
-
-
-
-// function getChannelId(buttonId){
-//   return buttonId;
-// }
 function myFunction(buttonId){
-  //removeEventListener('click', myFunction);
-  //console.log(buttonId)
-  //update(dict.get(buttonId));
   createCanvas(buttonId);
   update(dict.get(buttonId));
   list = dict.get(buttonId);
@@ -744,22 +651,18 @@ function update(data){
   d3.selectAll("dot").remove();
   d3.selectAll("text.myLabel").remove();
   d3.selectAll("text.myLabel2").remove();
-  //d3.selectAll("div.tooltip").remove();
 
   x.domain(d3.extent(data, function(d) {return d.dateUploaded; }));
   y.domain([0, d3.max(data, function(d) {return d.views; })]);
   var policyDate = new Date("2018-02-20");
 
   svg.append("path")
-      //console.log("path");
       .data([data])
       .attr("class", "line")
       .style("stroke", "red")
       .attr("id", function(d) { return d.id;})
       .attr("d", valueline);
-      // .attr("d", function(d) { return valueline(d.views); })
-      // .style("stroke", function(d) { return z(d.id); });
-
+	
   svg.selectAll("dot")  
     .data(data)     
     .enter().append("circle")
@@ -768,9 +671,6 @@ function update(data){
       .attr("cx", function(d) { return x(d.dateUploaded); })     
       .attr("cy", function(d) { return y(d.views); }) 
       .on("click", function(d){
-          //console.log(d.videoURl);
-            //d3.selectAll(".node").remove();
-            //.attr("fill","red");
             d3.select("svg.bubble").remove();
             var myElement = document.getElementById("thumbnail");
             document.getElementById("thumbnail").innerHTML =
@@ -784,15 +684,12 @@ function update(data){
               +"<br/>" + "# Comments: " + Number(d.comments).toLocaleString('en'))
             console.log(d.videoId);
             console.log(String(d.videoId));
-            bubbleChart(String(d.videoId));
-            //bubbleChart("wdSXvTCksFA");
-            
+            bubbleChart(String(d.videoId));        
         })  
       .on("mouseover", function(d) {    
         d3.select(this)
         .style("stroke-width", 3)
-        .style("stroke", "#FFD700")
-        //d3.select(this).style("fill", "#FFD700");  
+        .style("stroke", "#FFD700") 
      })      
     .on("mouseout", function(d) {   
       d3.select(this)
@@ -829,24 +726,17 @@ function update(data){
 
     svg.append("text")
     .attr("y", -18)//magic number here
-    //.attr("x", function(){ return x(lineEnd)})
     .attr("x", x(policyDate))
     .attr('text-anchor', 'middle')
     .attr("class", "myLabel")//easy to style with CSS
     .text("New Policy:")
-    //.text("20 Feb 18")
 
     svg.append("text")
     .attr("y", -3)//magic number here
-    //.attr("x", function(){ return x(lineEnd)})
     .attr("x", x(policyDate))
     .attr('text-anchor', 'middle')
     .attr("class", "myLabel")//easy to style with CSS
     .text("20 Feb 18")
-
-//20 Feb 18
-
-
  }
     // taken directly from nbremer's occupationcanvas code
     //Generates the next color in the sequence, going from 0,0,0 to 255,255,255.
@@ -869,17 +759,10 @@ function genColor(){
 
 //////////////////////////////////////////////////////////////////////////////
 function createCanvas(buttonId){
-  //d3.select('svg').selectAll('*').remove();
-  // Set new data on your chart:
-  // var items = d3.select('svg').selectAll('.item').data(newData);
-
   // // Remove old elements:
-  // items.exit().remove();
   d3.selectAll('div.tooltip2').remove();
   d3.selectAll('canvas').remove();
   d3.selectAll('hiddenCanvas').remove();
-  // canvas.remove();
-  // hiddenCanvas.remove();
 
   d3.json('youtubeIMG3.json', function(image) {
         d3.json('vids2.json', function(videos) {
@@ -892,13 +775,8 @@ function createCanvas(buttonId){
 
           //set up canvas and hidden canvas
           var canvas = d3.select('#logo')
-            // .attr("transform", 
-            //     "translate(" + margin.left + "," + 700 + ")") //fix
             .append('canvas')
             .on('mousemove', mousemove).node();
-          // d3.selectAll('canvas')
-          //   .attr("transform", 
-          //         "translate(" + 10 + "," + 10 + ")")            //.on('mouseover', mousemove).node();
           canvas.width = imageSize * scaleFactor;
           canvas.height = imageSize * scaleFactor;
           var ctx = canvas.getContext('2d');
@@ -918,25 +796,15 @@ function createCanvas(buttonId){
             .style("left", 50 + "px")   
             .style("top", 180 + "px")
             .attr("opacity",0);
-            // .style({
-            //   'width': (window.innerWidth - canvas.width - 3 * padding) + 'px',
-            //   'display': 'inline-block',
-            //   'vertical-align': 'top',
-            //   'padding': padding + 'px'
-            // });
           
           // first process the tweets
           var minOpacity = _.min(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.likes;
           });
-          //minOpacity = minOpacity.stats.favorites + 1;
           minOpacity = minOpacity.likes + 1;
           var maxOpacity = _.max(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.likes;
           });
-          //maxOpacity = maxOpacity.stats.favorites + 1;
           maxOpacity = maxOpacity.likes + 1;
 
           var opacityScale = d3.scaleLog()
@@ -946,16 +814,12 @@ function createCanvas(buttonId){
 
           // first process the tweets
           var minRadius = _.min(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.views;
           });
-          //minOpacity = minOpacity.stats.favorites + 1;
           minRadius = minRadius.views + 1;
           var maxRadius = _.max(videos, function(video) {
-            //return tweet.stats.favorites;
             return video.views;
           });
-          //maxOpacity = maxOpacity.stats.favorites + 1;
           maxRadius = maxRadius.views + 1;
 
           var radiusScale = d3.scaleLog()
@@ -963,9 +827,6 @@ function createCanvas(buttonId){
             .range([.25, 1]);
 
           var videoColors = {
-            // 'reply': [248,148,6], // orange
-            // 'retweet': [81,163,81], // green
-            // 'tweet': [0,136,204] // blue
             'before': [192,192,192], // silver
             'after': [144,144,144], // dark grey
           };
@@ -984,14 +845,7 @@ function createCanvas(buttonId){
               } else  {
                 video.type = 'after';
               } 
-              //video.uniqColor = genColor();
-              // and then remember the tweet by its unique color
-              //video.uniqColor = genColor();
-              //if(video.channelId == buttonId){
-                 // video.uniqColor = 'rgb(255,0,0)'
-             // }else{
-                  video.uniqColor = genColor();
-                //}
+               video.uniqColor = genColor();
               colToVideo[video.uniqColor] = video;
               return video.date;
             }).sortBy(function(video, i) {
@@ -1028,9 +882,6 @@ function createCanvas(buttonId){
           drawCanvas();
 
           function drawCanvas() {
-            //first clear canvas
-            //ctx.destoy();
-
             ctx.fillStyle = "#fff";
             ctx.rect(0, 0, canvas.width, canvas.height);
             ctx.fill();
@@ -1048,10 +899,8 @@ function createCanvas(buttonId){
                 else{
                   ctx.fillStyle = 'rgba(' + videoColors[video.type].join(',') +
                     ',' + video.opacity + ')';
-                    //console.log(ctx.fillStyle);
                 }
                 ctx.beginPath();
-                //ctx.arc(x, y, scaleFactor * tweet.opacity, 0, 2 * Math.PI, true);
                 ctx.arc(x, y, scaleFactor * video.radius, 0, 2 * Math.PI, true);
                 
                 ctx.fill();
@@ -1077,7 +926,6 @@ function createCanvas(buttonId){
           function mousemove() {
             var col = hiddenCtx.getImageData(d3.event.offsetX, d3.event.offsetY, 1, 1).data;
             var color = 'rgb(' + col[0] + "," + col[1] + ","+ col[2] + ")";
-            //console.log(color)
             var video = colToVideo[color];
 
             video = colToVideo[color];
@@ -1098,22 +946,17 @@ function createCanvas(buttonId){
               videoString += '<p>' + 'Channel: ' + String(video.channelName).substring(0,video.channelName.length) + '</p>';
               videoString += '<p>' + 'Title: '+ video.videoTitle + '</p>';
               videoString += '<p>' + '# Views: ' + viewsStr.substring(0,viewsStr.length) + '</p>'; 
-              //Number(d.views).toLocaleString('en')
               videoString += '<p>' + Number(video.likes).toLocaleString('en') + ' likes, ' +
                 Number(video.dislikes).toLocaleString('en') + ' dislikes</p>';
               videoDiv.html(videoString);
               videoDiv.transition()    
                 .duration(500)    
                 .style("opacity", 1);
-              //.attr("opacity",0); 
-              //console.log(videoString)
             }
           }
         });
     });
 }
-
- //   });
 </script>
 
 </html>
